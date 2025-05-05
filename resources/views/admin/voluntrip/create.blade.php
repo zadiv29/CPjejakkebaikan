@@ -19,6 +19,7 @@
 
                 <form method="POST" action="{{ route('admin.voluntrip.store') }}" enctype="multipart/form-data">
                     @csrf
+
                     <div>
                         <x-input-label for="name" :value="__('Name')" />
                         <x-text-input id="name" class="mt-1 block w-full" type="text" name="name"
@@ -34,17 +35,31 @@
                     </div>
 
                     <div class="mt-4">
-                        <x-input-label for="target_amount" :value="__('Target Amount')" />
-                        <x-text-input id="target_amount" class="mt-1 block w-full" type="number" name="target_amount"
-                            :value="old('target_amount')" required autofocus autocomplete="target_amount" />
-                        <x-input-error :messages="$errors->get('target_amount')" class="mt-2" />
+                        <x-input-label for="start_date" :value="__('Start Date')" />
+                        <x-text-input id="start_date" class="mt-1 block w-full" type="date" name="start_date"
+                            required autofocus autocomplete="start_date" :value="old('start_date')" />
+                        <x-input-error :messages="$errors->get('start_date')" class="mt-2" />
                     </div>
 
                     <div class="mt-4">
-                        <x-input-label for="ticket_price" :value="__('Ticket Price')" />
-                        <x-text-input id="ticket_price" class="mt-1 block w-full" type="number" name="ticket_price"
-                            :value="old('ticket_price')" required autofocus autocomplete="ticket_price" />
-                        <x-input-error :messages="$errors->get('ticket_price')" class="mt-2" />
+                        <x-input-label for="start_time" :value="__('Starts At')" />
+                        <x-text-input id="start_time" class="mt-1 block w-full" type="time" name="start_time"
+                            required autofocus autocomplete="start_time" :value="old('start_time')" />
+                        <x-input-error :messages="$errors->get('start_time')" class="mt-2" />
+                    </div>
+
+                    <div class="mt-4">
+                        <x-input-label for="end_time" :value="__('Ends At')" />
+                        <x-text-input id="end_time" class="mt-1 block w-full" type="time" name="end_time" required
+                            autofocus autocomplete="end_time" :value="old('end_time')" />
+                        <x-input-error :messages="$errors->get('end_time')" class="mt-2" />
+                    </div>
+
+                    <div class="mt-4">
+                        <x-input-label for="total_ticket" :value="__('Total Tickets')" />
+                        <x-text-input id="total_ticket" class="mt-1 block w-full" type="number" name="total_ticket"
+                            required autofocus autocomplete="total_ticket" :value="old('total_ticket')" />
+                        <x-input-error :messages="$errors->get('total_ticket')" class="mt-2" />
                     </div>
 
                     <div class="mt-4">
@@ -54,30 +69,15 @@
                     </div>
 
                     <div class="mt-4">
-                        <x-input-label for="start_date" :value="__('Start Date')" />
-                        <x-text-input id="start_date" class="mt-1 block w-full" type="date" name="start_date"
-                            required autofocus autocomplete="start_date" />
-                        <x-input-error :messages="$errors->get('start_date')" class="mt-2" />
-                    </div>
-
-                    <div class="mt-4">
-                        <x-input-label for="start_time" :value="__('Starts At')" />
-                        <x-text-input id="start_time" class="mt-1 block w-full" type="time" name="start_time"
-                            required autofocus autocomplete="start_time" />
-                        <x-input-error :messages="$errors->get('start_time')" class="mt-2" />
-                    </div>
-
-                    <div class="mt-4">
-                        <x-input-label for="end_time" :value="__('Ends At')" />
-                        <x-text-input id="end_time" class="mt-1 block w-full" type="time" name="end_time" required
-                            autofocus autocomplete="end_time" />
-                        <x-input-error :messages="$errors->get('end_time')" class="mt-2" />
+                        <x-input-label for="ticket_price" :value="__('Ticket Price')" />
+                        <x-text-input id="ticket_price" class="mt-1 block w-full" type="number" name="ticket_price"
+                            :value="old('ticket_price')" required autofocus autocomplete="ticket_price" />
+                        <x-input-error :messages="$errors->get('ticket_price')" class="mt-2" />
                     </div>
 
                     <div class="mt-4 flex items-center justify-end">
-
                         <button type="submit" class="rounded-full bg-indigo-700 px-6 py-4 font-bold text-white">
-                            Add New Voluntrip
+                            Submit
                         </button>
                     </div>
                 </form>
