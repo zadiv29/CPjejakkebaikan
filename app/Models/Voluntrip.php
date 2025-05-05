@@ -10,17 +10,18 @@ class Voluntrip extends Model
     protected $table = "voluntrip";
 
     protected $fillable = [
-        "slug",
         "thumbnail",
         "name",
-        "about",
-        "target_amount",
         "start_date",
         "start_time",
         "end_time",
+        "total_ticket",
+        "about",
         "is_active",
         "fundraiser_id",
+        "slug",
         "ticket_price",
+        "event_status",
     ];
 
     public function fundraiser(): BelongsTo
