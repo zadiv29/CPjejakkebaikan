@@ -11,7 +11,7 @@ class StoreVoluntripRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->hasAnyRole(['fundraiser']);
+        return $this->user()->hasAnyRole(['owner|fundraiser']);
     }
 
     /**
@@ -25,12 +25,13 @@ class StoreVoluntripRequest extends FormRequest
             //
             'thumbnail' => ['required', 'image', 'mimes:png,jpg,jpeg'],
             'name' => ['required', 'string', 'max:255'],
-            'target_amount' => ['required', 'integer'],
-            'about' => ['required', 'string', 'max:65535'],
             'start_date' => ['required', 'date'],
             'start_time' => ['required', 'date_format:H:i'],
             'end_time' => ['required', 'date_format:H:i'],
+            'total_ticket' => ['required', 'integer'],
+            'about' => ['required', 'string', 'max:65535'],
             'ticket_price' => ['required', 'integer'],
+            'event_status' => ['nullable', 'enum'],
         ];
     }
 }
