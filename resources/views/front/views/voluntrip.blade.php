@@ -12,7 +12,7 @@
                         class="h-[200px] w-full">
                 </div>
                 <div class="card-container flex h-full flex-col justify-between gap-5 px-3 pt-3">
-                    <div class="card-body flex flex-col gap-2">
+                    <div class="card-body flex flex-col gap-2 break-words">
                         <div class="flex flex-col gap-1">
                             <h4 class="title-voluntrip text-sm font-bold">{{ $voluntrip->name }}</h4>
                             <div class="flex items-center gap-1">
@@ -24,7 +24,7 @@
                                 </div>
                             </div>
                         </div>
-                        <p class="text-sm">{{ $voluntrip->about }}</p>
+                        <p class="line-clamp-2 text-sm">{{ $voluntrip->about }}</p>
                     </div>
                     <div class="donation-section flex items-center justify-between gap-2 border-t-2 px-2 py-4">
                         <div class="flex flex-col">
