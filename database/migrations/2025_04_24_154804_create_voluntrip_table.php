@@ -15,15 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('thumbnail');
             $table->string('name');
-            $table->unsignedBigInteger('target_amount');
-            $table->text('about');
             $table->date('start_date');
             $table->time('start_time');
             $table->time('end_time');
+            $table->integer('total_ticket');
+            $table->text('about');
             $table->boolean('is_active');
             $table->foreignId('fundraiser_id')->constrained()->onDelete('cascade');
             $table->string('slug')->unique();
             $table->unsignedBigInteger('ticket_price');
+            $table->enum('event_status', ['pending', 'active', 'completed'])->default('pending');
             $table->timestamps();
         });
     }
