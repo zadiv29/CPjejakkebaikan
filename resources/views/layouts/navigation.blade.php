@@ -26,6 +26,9 @@
                         <x-nav-link :href="route('admin.fundraising_withdrawals.index')" :active="request()->routeIs('admin.fundraising_withdrawals.index')">
                             {{ __('Withdrawals') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('admin.voluntrip.index')" :active="request()->routeIs('admin.voluntrip.index')">
+                            {{ __('Voluntrip') }}
+                        </x-nav-link>
                     @endrole
 
                     @role('owner|fundraiser')
@@ -42,10 +45,10 @@
                         <x-nav-link :href="route('admin.my-withdrawals')" :active="request()->routeIs('admin.my-withdrawals')">
                             {{ __('My Withdrawals') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('admin.voluntrip.index')" :active="request()->routeIs('admin.voluntrip.index')">
+                            {{ __('Voluntrip') }}
+                        </x-nav-link>
                     @endrole
-                    <x-nav-link :href="route('admin.voluntrip.index')" :active="request()->routeIs('admin.voluntrip.index')">
-                        {{ __('Voluntrip') }}
-                    </x-nav-link>
                 </div>
 
             </div>
