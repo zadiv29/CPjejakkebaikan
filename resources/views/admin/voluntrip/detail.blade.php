@@ -9,8 +9,18 @@
     <div class="py-12">
         <div class="mx-auto max-w-5xl space-y-6 rounded-xl bg-white p-6 shadow-md">
             <!-- Header -->
-            <div class="flex">
+            <div class="flex flex-wrap-reverse items-start justify-between gap-5">
                 <h1 class="text-3xl font-bold text-gray-800">{{ $voluntrip->name }}</h1>
+                @role('owner')
+                    <form action="{{ route('admin.voluntrip.update', $voluntrip) }}" method="POST">
+                        @csrf
+                        @method('PATCH')
+                        <input type="hidden" name="action" value="approve">
+                        <button type="submit" class="rounded-full bg-indigo-700 px-4 py-1 font-bold text-white">
+                            Approve Now
+                        </button>
+                    </form>
+                @endrole
             </div>
 
             <!-- Layout -->
@@ -22,28 +32,28 @@
                 </div>
 
                 <!-- Detail -->
-                <div class="relative space-y-3 rounded-md border p-2 text-sm text-gray-700">
-                    <div class="flex">
+                <div class="relative space-y-3 rounded-md border p-2 pb-14 text-sm text-gray-700">
+                    <div class="flex flex-wrap">
                         <span class="w-40 font-medium">Fundraiser</span>
                         <span>: {{ $voluntrip->fundraiser->user->name ?? '-' }}</span>
                     </div>
-                    <div class="flex">
+                    <div class="flex flex-wrap">
                         <span class="w-40 font-medium">Tanggal Mulai</span>
                         <span>: {{ $date }}</span>
                     </div>
-                    <div class="flex">
+                    <div class="flex flex-wrap">
                         <span class="w-40 font-medium">Waktu</span>
                         <span>: {{ $timeStart }} - {{ $timeEnd }} WIB</span>
                     </div>
-                    <div class="flex">
+                    <div class="flex flex-wrap">
                         <span class="w-40 font-medium">Harga Tiket</span>
                         <span>: Rp{{ number_format($voluntrip->ticket_price, 0, ',', '.') }}</span>
                     </div>
-                    <div class="flex">
+                    <div class="flex flex-wrap">
                         <span class="w-40 font-medium">Total Tiket</span>
                         <span>: {{ $voluntrip->total_ticket }}</span>
                     </div>
-                    <div class="flex items-center">
+                    <div class="flex flex-wrap md:items-center">
                         <span class="w-40 font-medium">Status Event</span>
                         <div class="flex items-center gap-1">
                             <span>:</span>
@@ -83,15 +93,14 @@
                     </div>
                     @role('owner')
                         @if (!$voluntrip->is_active)
-                            <form action="{{ route('admin.voluntrip.update', $voluntrip) }}" method="POST">
-                                @csrf
-                                @method('PATCH')
-                                <input type="hidden" name="action" value="approve">
-                                <button type="submit"
-                                    class="absolute bottom-2 right-2 rounded-full bg-indigo-700 px-4 py-1 font-bold text-white">
-                                    Approve Now
+                            <div class="absolute bottom-2 right-2 flex items-center gap-2">
+                                <button class="rounded-md border bg-blue-400 px-4 text-white">
+                                    Edit
                                 </button>
-                            </form>
+                                <button class="rounded-md border bg-red-400 px-4 text-white">
+                                    Delete
+                                </button>
+                            </div>
                         @endif
                     @endrole
                 </div>
