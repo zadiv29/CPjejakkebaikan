@@ -12,14 +12,16 @@
             <div class="flex flex-wrap-reverse items-start justify-between gap-5">
                 <h1 class="text-3xl font-bold text-gray-800">{{ $voluntrip->name }}</h1>
                 @role('owner')
-                    <form action="{{ route('admin.voluntrip.update', $voluntrip) }}" method="POST">
-                        @csrf
-                        @method('PATCH')
-                        <input type="hidden" name="action" value="approve">
-                        <button type="submit" class="rounded-full bg-indigo-700 px-4 py-1 font-bold text-white">
-                            Approve Now
-                        </button>
-                    </form>
+                    @if (!$voluntrip->is_active)
+                        <form action="{{ route('admin.voluntrip.update', $voluntrip) }}" method="POST">
+                            @csrf
+                            @method('PATCH')
+                            <input type="hidden" name="action" value="approve">
+                            <button type="submit" class="rounded-full bg-indigo-700 px-4 py-1 font-bold text-white">
+                                Approve Now
+                            </button>
+                        </form>
+                    @endif
                 @endrole
             </div>
 
@@ -92,16 +94,14 @@
 
                     </div>
                     @role('owner')
-                        @if (!$voluntrip->is_active)
-                            <div class="absolute bottom-2 right-2 flex items-center gap-2">
-                                <button class="rounded-md border bg-blue-400 px-4 text-white">
-                                    Edit
-                                </button>
-                                <button class="rounded-md border bg-red-400 px-4 text-white">
-                                    Delete
-                                </button>
-                            </div>
-                        @endif
+                        <div class="absolute bottom-2 right-2 flex items-center gap-2">
+                            <button class="rounded-md border bg-blue-400 px-4 text-white">
+                                Edit
+                            </button>
+                            <button class="rounded-md border bg-red-400 px-4 text-white">
+                                Delete
+                            </button>
+                        </div>
                     @endrole
                 </div>
 
