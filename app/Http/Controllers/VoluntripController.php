@@ -71,8 +71,11 @@ class VoluntripController extends Controller
         $date = Carbon::parse($voluntrip->start_date)->format('d F Y');
         $timeStart = Carbon::parse($voluntrip->start_time)->format('H.i');
         $timeEnd = Carbon::parse($voluntrip->end_time)->format('H.i');
+        $dateForInput = Carbon::parse($voluntrip->start_date)->format('Y-m-d');
+        $timeStartInput = Carbon::parse($voluntrip->start_time)->format('H:i');
+        $timeEndInput = Carbon::parse($voluntrip->end_time)->format('H:i');
 
-        return view('admin.voluntrip.detail', compact('voluntrip', 'date', 'timeStart', 'timeEnd'));
+        return view('admin.voluntrip.detail', compact('voluntrip', 'date', 'timeStart', 'timeEnd', 'dateForInput', 'timeStartInput', 'timeEndInput'));
     }
 
     public function update(Request $request, Voluntrip $voluntrip)
@@ -87,15 +90,36 @@ class VoluntripController extends Controller
         }
 
         if ($request->has('event_status') && auth()->user()->hasRole('fundraiser')) {
-            $request->validate([
-                'event_status' => 'in:active,completed',
+            $validated = $request->validate([
+                'event_status' => 'nullable|in:active,completed',
+                'start_date'   => 'nullable|date',
+                'start_time'   => 'nullable|date_format:H:i',
+                'end_time'     => 'nullable|date_format:H:i|after_or_equal:start_time',
+                'ticket_price' => 'nullable|numeric|min:0',
+                'total_ticket' => 'nullable|integer|min:1',
             ]);
 
-            $voluntrip->event_status = $request->input('event_status');
+            $voluntrip->fill(array_filter($validated));
             $voluntrip->save();
 
             return redirect()->route('admin.voluntrip.show', $voluntrip->slug)
                 ->with('success', 'Voluntrip approved and activated successfully.');
+        }
+        if (auth()->user()->hasRole('owner')) {
+            $validated = $request->validate([
+                'event_status' => 'nullable|in:active,completed',
+                'start_date'   => 'nullable|date',
+                'start_time'   => 'nullable|date_format:H:i',
+                'end_time'     => 'nullable|date_format:H:i|after_or_equal:start_time',
+                'ticket_price' => 'nullable|numeric|min:0',
+                'total_ticket' => 'nullable|integer|min:1',
+            ]);
+
+            $voluntrip->fill(array_filter($validated));
+            $voluntrip->save();
+
+            return redirect()->route('admin.voluntrip.show', $voluntrip->slug)
+                ->with('success', 'Voluntrip updated successfully.');
         }
     }
 }
