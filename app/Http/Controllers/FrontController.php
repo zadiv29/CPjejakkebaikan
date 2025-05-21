@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreVoluntripRequest;
+use App\Mail\VolunteerVerificationMail;
+use App\Models\Volunteer;
+use App\Models\VolunteerPayment;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Fundraising;
@@ -11,6 +14,9 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Donatur;
 use App\Models\Voluntrip;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class FrontController extends Controller
 {
@@ -24,7 +30,10 @@ class FrontController extends Controller
             ->orderByDesc('id')
             ->get();
 
-        $voluntrips = Voluntrip::where('is_active', 1)->get();
+        $voluntrips = Voluntrip::where('event_status', 'active')
+            ->orderBy('created_at', 'desc')
+            ->take(4)
+            ->get();
 
         return view('front.views.index', compact('categories', 'fundraisings', 'voluntrips'));
     }
@@ -84,5 +93,150 @@ class FrontController extends Controller
         $tab = $request->query('tab', 'deskripsi');
 
         return (view('front.views.detail-voluntrip',   compact('voluntrip', 'date', 'timeStart', 'timeEnd', 'tab')));
+    }
+
+    public function createVolunteer(Voluntrip $voluntrip, Request $request)
+    {
+        $qty = $request->query('qty', 1);
+        $total = $request->query('total', $voluntrip->ticket_price);
+        $date = Carbon::parse($voluntrip->start_date)->format('d F Y');
+        $timeStart = Carbon::parse($voluntrip->start_time)->format('H.i');
+        $timeEnd = Carbon::parse($voluntrip->end_time)->format('H.i');
+
+        return view('front.views.register-volunteer', [
+            'voluntrip' => $voluntrip,
+            'qty' => $qty,
+            'total' => $total,
+            'date' => $date,
+            'timeStart' => $timeStart,
+            'timeEnd' => $timeEnd,
+        ]);
+    }
+    public function volunteerStore(Request $request)
+    {
+        $validated = $request->validate([
+            // 'qty' => 'required|integer|min:1',
+            'volunteers' => 'required|array',
+            'volunteers.*.name' => 'required|string',
+            'volunteers.*.email' => 'required|email',
+            'volunteers.*.number_phone' => 'required|string',
+            // 'total' => 'required|numeric',
+            'payment_channel' => 'required|string',
+            'voluntrip_id' => 'required|exists:voluntrip,id',
+        ]);
+
+        $paymentChannel = $validated['payment_channel'];
+
+        // Simpan dulu semua volunteer tanpa volunteer_payment_id
+        $volunteers = [];
+        foreach ($validated['volunteers'] as $volunteerData) {
+            $volunteers[] = Volunteer::create([
+                'name' => $volunteerData['name'],
+                'email' => $volunteerData['email'],
+                'number_phone' => $volunteerData['number_phone'],
+                'voluntrip_id' => $request->voluntrip_id,
+                'is_verified' => false,
+                'verify_token' => Str::random(60),
+            ]);
+        }
+        Mail::to($volunteers[0]->email)->send(new VolunteerVerificationMail($volunteers[0], $paymentChannel));
+        return view('front.views.notification', ['volunteer' => $volunteers[0]]);
+    }
+
+    public function verifyVolunteer($token, $paymentChannel)
+    {
+        $volunteer = Volunteer::where('verify_token', $token)->firstOrFail();
+        // Jika sudah punya pembayaran, arahkan ke halaman pembayaran
+        if ($volunteer->payment) {
+            if ($volunteer->payment->status === 'paid') {
+                return view('front.views.already-paid'); // Sudah dibayar
+            }
+
+            if ($volunteer->payment->status === 'expired') {
+                return view('front.views.already-expired');
+            }
+
+            return redirect()->route('payment.information', ['payment' => $volunteer->payment->uuid]); // VA sudah dibuat, belum dibayar
+        }
+
+        // Ambil semua anggota kelompok dari voluntrip ini yang belum punya payment
+        $relatedVolunteers = Volunteer::where('voluntrip_id', $volunteer->voluntrip_id)
+            ->whereNull('volunteer_payments_id')
+            ->get();
+
+        $total = $relatedVolunteers->count() * $volunteer->voluntrip->ticket_price;
+
+        $response = Http::withToken(env('OMMOPAY_API_TOKEN'))
+            ->post(
+                'https://api.ommopay.id/v1/virtual_account',
+                [
+                    'merchant_trx_id' => 'ID_' . time(),
+                    'payment_channel' => $paymentChannel,
+                    'amount' => $total,
+                    'name' => $volunteer->name,
+                    'description' => 'Pembayaran untuk pendaftaran volunteer',
+                    'expired_time' => now()->addMinutes(2)->toIso8601String(),
+                    'callback_url' => route('payment.callback'),
+                ]
+            );
+
+
+        if ($response->successful()) {
+            $paymentData = $response->json();
+            $data = $paymentData['data'];
+
+            // Log::info('data', [$data]);
+
+            $payment = VolunteerPayment::create([
+                'uuid' => $data['uuid'],
+                'merchant_trx_id' => $data['merchant_trx_id'],
+                'amount' => $data['amount'],
+                'payment_method' => $data['payment_method'],
+                'payment_channel' => $data['payment_channel'],
+                'va_number' => $data['va_number'],
+                'expired_at' => $data['expired_time'],
+                'status' => 'pending',
+            ]);
+            foreach ($relatedVolunteers as $v) {
+                $v->update(['volunteer_payments_id' => $payment->id]);
+            }
+
+            return redirect()->route('payment.information', ['payment' => $data['uuid']]);
+        }
+
+        return back()->withErrors('Gagal membuat Virtual Account. Silakan coba lagi.');
+    }
+
+    public function information(VolunteerPayment $payment)
+    {
+        return view('front.views.payment-information', [
+            'payment' => $payment
+        ]);
+    }
+
+    public function getStatus(VolunteerPayment $payment)
+    {
+        return response()->json(['status' => $payment->status]);
+    }
+
+    public function paymentCallback(Request $request)
+    {
+        // Log::info('Callback dari OmmoPay:', $request->all());
+
+        $uuid = $request->input('uuid');
+        $status = $request->input('status'); // misalnya: 'success', 'failed'
+
+        $payment = VolunteerPayment::where('uuid', $uuid)->first();
+
+        if ($payment) {
+            $payment->update([
+                'status' => $status,
+            ]);
+
+            // Log::info('update status skses:', [$payment]);
+            // Bisa juga update relasi ke Volunteer jika perlu
+        }
+
+        return response()->json(['message' => 'Callback received']);
     }
 }
