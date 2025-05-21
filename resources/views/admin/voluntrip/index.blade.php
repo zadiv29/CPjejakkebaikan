@@ -17,7 +17,18 @@
         <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="grid gap-5 overflow-hidden bg-white p-10 shadow-sm sm:rounded-lg md:grid-cols-2 lg:grid-cols-4">
                 @forelse($voluntrips as $voluntrip)
-                    <div class="card-item flex max-h-[500px] flex-col overflow-hidden rounded-lg bg-white shadow-md">
+                    <div
+                        class="card-item relative flex max-h-[500px] flex-col overflow-hidden rounded-lg bg-white shadow-md">
+                        <div class="label absolute right-2 top-2 flex gap-1">
+                            <span
+                                class="{{ $voluntrip->event_status === 'pending'
+                                    ? 'bg-yellow-100 text-yellow-600'
+                                    : ($voluntrip->event_status === 'active'
+                                        ? 'text-green-600 bg-green-100'
+                                        : ($voluntrip->event_status === 'rejected'
+                                            ? 'bg-red-100 text-red-600'
+                                            : 'bg-blue-100 text-blue-600')) }} rounded-sm px-2 text-[12px] font-medium capitalize">{{ $voluntrip->event_status }}</span>
+                        </div>
                         <div class="thumbnail">
                             <img src="{{ Storage::url($voluntrip->thumbnail) }}" alt="thumbnail"
                                 class="h-[200px] w-full">
