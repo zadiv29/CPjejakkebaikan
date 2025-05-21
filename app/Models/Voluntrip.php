@@ -28,4 +28,9 @@ class Voluntrip extends Model
     {
         return $this->belongsTo(Fundraiser::class, 'fundraiser_id');
     }
+
+    public function volunteers()
+    {
+        return $this->hasMany(Volunteer::class);
+    }
 }
