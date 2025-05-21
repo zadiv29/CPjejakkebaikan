@@ -35,6 +35,27 @@ Route::get('/details/voluntrip/{voluntrip:slug}', [FrontController::class, 'volu
 Route::post('/buy/ticket/{voluntrips:slug}/{priceTicket}', [FrontController::class, 'buyTicket'])
     ->name('front.voluntrip.store');
 
+// ANCHOR Volunteer Create
+Route::get('/voluntrip/{voluntrip:slug}/volunteers/register', [FrontController::class, 'createVolunteer'])->name('volunteers.create');
+
+Route::post('/volunteers/store', [FrontController::class, 'volunteerStore'])->name('volunteers.store');
+
+Route::get('/volunteer/notification', function () {
+    return view('front.views.notification');
+})->name('volunteer.notification');
+
+Route::get('/volunteer/verify/{token}/{paymentChannel}', [FrontController::class, 'verifyVolunteer'])->name('volunteer.verify');
+
+Route::get('/payment/information/{payment}', [FrontController::class, 'information'])
+    ->name('payment.information');
+
+Route::get('/payment/status/{payment}', [FrontController::class, 'getStatus'])->name('payment.status');
+
+Route::view('/payment/already-verified', 'front.views.already-paid')->name('payment.already_verified');
+
+Route::view('/payment/already-expired', 'front.views.already-expired')->name('payment.already_expired');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
