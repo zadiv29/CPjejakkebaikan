@@ -35,8 +35,6 @@
                                 <span class="w-fit rounded-full bg-green-500 px-3 py-2 text-sm font-bold text-white">
                                     ACTIVE
                                 </span>
-                                {{-- <x-danger-button x-data=""
-                                    x-on:click.prevent="$dispatch('open-modal', 'confirm-delete-{{ $fundraiser->id }}')">{{ __('Hapus') }}</x-danger-button> --}}
                                 <button x-data=""
                                     x-on:click.prevent="$dispatch('open-modal', 'confirm-delete-{{ $fundraiser->id }}'); console.log('open modal event dispatched')"
                                     class="rounded-full bg-red-700 px-6 py-4 font-bold text-white">
