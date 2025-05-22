@@ -55,13 +55,31 @@
                                 Edit
                             </a>
                         @endrole
-                        <form action="{{ route('admin.fundraisings.destroy', $fundraising) }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="rounded-full bg-red-700 px-6 py-4 font-bold text-white">
-                                Delete
-                            </button>
-                        </form>
+                        <button x-data="" x-on:click.prevent="$dispatch('open-modal', 'confirm-delete')"
+                            class="rounded-full bg-red-700 px-6 py-4 font-bold text-white">
+                            Hapus
+                        </button>
+                        <x-modal name="confirm-delete" focusable>
+                            <div class="p-6">
+                                <h2 class="text-lg font-semibold text-gray-900">Yakin ingin menghapus?</h2>
+                                <p class="mt-2 text-sm text-gray-600">Tindakan ini tidak dapat dibatalkan.</p>
+
+                                <div class="mt-6 flex justify-end space-x-2">
+                                    <x-secondary-button x-on:click="$dispatch('close')">
+                                        Batal
+                                    </x-secondary-button>
+
+                                    <form action="{{ route('admin.fundraisings.destroy', $fundraising) }}"
+                                        method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <x-danger-button type="submit">
+                                            Delete
+                                        </x-danger-button>
+                                    </form>
+                                </div>
+                            </div>
+                        </x-modal>
                     </div>
                 </div>
 
