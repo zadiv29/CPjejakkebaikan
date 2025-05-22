@@ -173,7 +173,6 @@ class FrontController extends Controller
                     'merchant_trx_id' => 'ID_' . time(),
                     'payment_channel' => $paymentChannel,
                     'amount' => $total,
-                    'name' => $volunteer->name,
                     'description' => 'Pembayaran untuk pendaftaran volunteer',
                     'expired_time' => now()->addMinutes(60)->toIso8601String(),
                     'callback_url' => route('payment.callback'),
@@ -185,7 +184,6 @@ class FrontController extends Controller
             $paymentData = $response->json();
             $data = $paymentData['data'];
 
-            // Log::info('data', [$data]);
 
             $payment = VolunteerPayment::create([
                 'uuid' => $data['uuid'],
@@ -221,10 +219,9 @@ class FrontController extends Controller
 
     public function paymentCallback(Request $request)
     {
-        // Log::info('Callback dari OmmoPay:', $request->all());
 
         $uuid = $request->input('uuid');
-        $status = $request->input('status'); // misalnya: 'success', 'failed'
+        $status = $request->input('status');
 
         $payment = VolunteerPayment::where('uuid', $uuid)->first();
 
@@ -232,11 +229,22 @@ class FrontController extends Controller
             $payment->update([
                 'status' => $status,
             ]);
+            if ($status === 'PAID') {
+                $volunteers = $payment->volunteers;
 
-            // Log::info('update status skses:', [$payment]);
-            // Bisa juga update relasi ke Volunteer jika perlu
+                if ($volunteers->isNotEmpty()) {
+                    $voluntrip = $volunteers->first()->voluntrip;
+
+                    if ($voluntrip) {
+                        $ticketCount = $volunteers->count();
+
+                        if ($voluntrip->total_ticket >= $ticketCount) {
+                            $voluntrip->decrement('total_ticket', $ticketCount);
+                        }
+                    }
+                }
+            }
         }
-
         return response()->json(['message' => 'Callback received']);
     }
 }
