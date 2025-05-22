@@ -4,20 +4,6 @@
     <section class="mx-auto flex min-h-screen w-full max-w-[640px] flex-col overflow-x-hidden bg-white pb-[134px]">
 
         <div class="header flex flex-col overflow-hidden rounded-b-[50px] bg-gradient-to-b from-[#3CBBDB] to-[#2F5BE0FF]">
-            <nav class="flex items-center justify-between px-3 pt-5">
-                <div class="flex items-center gap-[10px]">
-                    <div class="flex h-10 w-10 shrink-0">
-                        <img src="{{ asset('assets/images/icons/loc.svg') }}" alt="icon">
-                    </div>
-                    <div class="flex flex-col text-white">
-                        <p class="text-xs leading-[18px]">Location</p>
-                        <p class="text-sm font-semibold">Yogyakarta, Indonesia</p>
-                    </div>
-                </div>
-                <a href="" class="flex h-10 w-10 shrink-0">
-                    <img src="{{ asset('assets/images/icons/menu.svg') }}" alt="icon">
-                </a>
-            </nav>
             <div class="z-10 mt-[30px]">
                 <h1 class="text-center text-2xl font-extrabold leading-[36px] text-white">Selamat Datang Di Jejak
                     Kebaikan<br>Sudah Berbuat Baik Hari ini?</h1>
@@ -41,7 +27,7 @@
                             <div class="flex h-[60px] w-[60px] shrink-0 overflow-hidden">
                                 <img src="{{ Storage::url($category->icon) }}" alt="icon">
                             </div>
-                            <span class="my-auto text-center font-semibold">{{ $category->name }}</span>
+                            <span class="my-auto line-clamp-2 text-center font-semibold">{{ $category->name }}</span>
                         </a>
                     </div>
                 @endforeach
@@ -116,29 +102,6 @@
 
         @include('front.views.voluntrip')
 
-        <div id="menu"
-            class="fixed bottom-[20px] left-1/2 flex w-full max-w-[341px] -translate-x-1/2 transform items-center justify-between rounded-[30px] bg-[#1E2037] p-3">
-            <a href="" class="flex items-center gap-[6px] rounded-full bg-[#FF7815] p-[14px_16px]">
-                <div class="flex shrink-0">
-                    <img src="{{ asset('assets/images/icons/heart.svg') }}" alt="icon">
-                </div>
-                <span class="text-sm font-semibold text-white">Discover</span>
-            </a>
-            <a href="" class="flex h-[52px] w-[56px] items-center justify-center p-[14px_16px]">
-                <div class="flex h-6 w-6 shrink-0 overflow-hidden">
-                    <img src="{{ asset('assets/images/icons/crown.svg') }}" alt="icon">
-                </div>
-            </a>
-            <a href="" class="flex h-[52px] w-[56px] items-center justify-center p-[14px_16px]">
-                <div class="flex h-6 w-6 shrink-0 overflow-hidden">
-                    <img src="{{ asset('assets/images/icons/3dcube.svg') }}" alt="icon">
-                </div>
-            </a>
-            <a href="" class="flex h-[52px] w-[56px] items-center justify-center p-[14px_16px]">
-                <div class="flex h-6 w-6 shrink-0 overflow-hidden">
-                    <img src="{{ asset('assets/images/icons/setting-2.svg') }}" alt="icon">
-                </div>
-            </a>
-        </div>
+
     </section>
 @endsection
