@@ -174,13 +174,13 @@
                     </div>
 
                     <div class="absolute bottom-2 right-2 flex items-center gap-2">
-                        @role('fundraiser')
+                        @if ($voluntrip->fundraiser->user_id === auth()->id())
                             <button class="rounded-md border bg-blue-400 px-5 py-[2px] text-white"
                                 @click="isEdit = !isEdit">
                                 Edit
                             </button>
-                            <button type="submit" id="update-voluntrip" form="update-voluntrip-{{ $voluntrip['id'] }}"
-                                :disabled="!isEdit"
+                            <button type="submit" id="update-voluntrip"
+                                form="update-voluntrip-{{ $voluntrip['id'] }}" :disabled="!isEdit"
                                 :class="{
                                     'rounded bg-green-500 px-5 py-[2px] text-white transition-all duration-300 ease-in-out': isEdit,
                                     'rounded bg-gray-400 cursor-default px-5 py-[2px] text-white transition-all duration-300 ease-in-out':
@@ -188,7 +188,7 @@
                                 }">
                                 Simpan
                             </button>
-                        @endrole
+                        @endif
                         @role('owner')
                             <button class="rounded-md border bg-red-400 px-5 py-[2px] text-white">
                                 Delete
