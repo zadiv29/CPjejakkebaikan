@@ -23,7 +23,7 @@ class VolunteerPayment extends Model
 
     public function volunteers()
     {
-        return $this->hasMany(Volunteer::class);
+        return $this->hasMany(Volunteer::class, 'volunteer_payments_id');
     }
 
     public function getRouteKeyName()
