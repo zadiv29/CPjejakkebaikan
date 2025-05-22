@@ -24,7 +24,16 @@ class VoluntripController extends Controller
         }
 
         foreach ($voluntrips as $voluntrip) {
-            $voluntrip->total_price = $voluntrip->ticket_price * $voluntrip->total_ticket;
+            $paidTickets = $voluntrip->volunteers()
+                ->whereHas('payment', fn ($q) => $q->where('status', 'PAID'))
+                ->count();
+
+            $totalTickets = $voluntrip->total_ticket + $paidTickets;
+
+            $percentage = $totalTickets > 0 ? round(($paidTickets / $totalTickets) * 100, 2) : 0;
+
+            $voluntrip->total_price = $paidTickets * $voluntrip->ticket_price;
+            $voluntrip->funded_percentage = $percentage;
         }
 
         return view('admin.voluntrip.index', compact('voluntrips'));
