@@ -46,7 +46,8 @@
                                             Rp{{ number_format($voluntrip->total_price, 0, ',', '.') }}</p>
                                     </div>
                                     <div class="h-2.5 w-full rounded-full bg-slate-300">
-                                        <div class="h-2.5 rounded-full bg-indigo-600" style="width: 10%">
+                                        <div class="h-2.5 rounded-full bg-indigo-600 transition-all duration-500"
+                                            style="width: {{ $voluntrip->funded_percentage }}%">
                                         </div>
                                     </div>
                                 </div>
