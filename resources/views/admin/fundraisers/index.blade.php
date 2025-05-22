@@ -35,8 +35,38 @@
                                 <span class="w-fit rounded-full bg-green-500 px-3 py-2 text-sm font-bold text-white">
                                     ACTIVE
                                 </span>
-                                <div class="hidden flex-row items-center gap-x-3 md:flex">
-                                    <form action="#" method="POST">
+                                {{-- <x-danger-button x-data=""
+                                    x-on:click.prevent="$dispatch('open-modal', 'confirm-delete-{{ $fundraiser->id }}')">{{ __('Hapus') }}</x-danger-button> --}}
+                                <button x-data=""
+                                    x-on:click.prevent="$dispatch('open-modal', 'confirm-delete-{{ $fundraiser->id }}'); console.log('open modal event dispatched')"
+                                    class="rounded-full bg-red-700 px-6 py-4 font-bold text-white">
+                                    Hapus
+                                </button>
+                                <x-modal name="confirm-delete-{{ $fundraiser->id }}" focusable>
+                                    <div class="p-6">
+                                        <h2 class="text-lg font-semibold text-gray-900">Yakin ingin menghapus?</h2>
+                                        <p class="mt-2 text-sm text-gray-600">Tindakan ini tidak dapat dibatalkan.</p>
+
+                                        <div class="mt-6 flex justify-end space-x-2">
+                                            <button x-on:click="$dispatch('close')"
+                                                class="rounded-lg bg-gray-200 px-4 py-2 text-gray-700 hover:bg-gray-300">
+                                                Batal
+                                            </button>
+
+                                            <form method="POST"
+                                                action="{{ route('admin.fundraisers.destroy', $fundraiser->id) }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                    class="rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700">
+                                                    Hapus
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </x-modal>
+                                {{-- <div class="hidden flex-row items-center gap-x-3 md:flex">
+                                    <form action="{{ route('admin.fundraisers.destroy', $fundraiser->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
@@ -44,7 +74,7 @@
                                             Delete
                                         </button>
                                     </form>
-                                </div>
+                                </div> --}}
                             @else
                                 <span class="w-fit rounded-full bg-orange-500 px-3 py-2 text-sm font-bold text-white">
                                     PENDING
