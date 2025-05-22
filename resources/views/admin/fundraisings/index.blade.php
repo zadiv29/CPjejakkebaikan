@@ -4,10 +4,12 @@
             <h2 class="text-xl font-semibold leading-tight text-gray-800">
                 {{ __('Manage Fundraisings') }}
             </h2>
-            <a href="{{ route('admin.fundraisings.create') }}"
-                class="rounded-full bg-indigo-700 px-6 py-4 font-bold text-white">
-                Add New
-            </a>
+            @role('fundraiser')
+                <a href="{{ route('admin.fundraisings.create') }}"
+                    class="rounded-full bg-indigo-700 px-6 py-4 font-bold text-white">
+                    Add New
+                </a>
+            @endrole
         </div>
     </x-slot>
 
