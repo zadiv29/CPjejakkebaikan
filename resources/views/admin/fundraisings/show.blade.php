@@ -49,10 +49,12 @@
                         <h3 class="text-xl font-bold text-indigo-950">{{ $fundraising->donaturs->count() }}</h3>
                     </div>
                     <div class="flex flex-row items-center gap-x-3">
-                        <a href="{{ route('admin.fundraisings.edit', $fundraising) }}"
-                            class="rounded-full bg-indigo-700 px-6 py-4 font-bold text-white">
-                            Edit
-                        </a>
+                        @role('fundraiser')
+                            <a href="{{ route('admin.fundraisings.edit', $fundraising) }}"
+                                class="rounded-full bg-indigo-700 px-6 py-4 font-bold text-white">
+                                Edit
+                            </a>
+                        @endrole
                         <form action="{{ route('admin.fundraisings.destroy', $fundraising) }}" method="POST">
                             @csrf
                             @method('DELETE')
@@ -80,47 +82,56 @@
                     </div>
                 </div>
                 <hr class="my-5">
-
-                @if (!$hasRequestedWithdrawal)
-                    <h3 class="text-2xl font-bold text-indigo-950">Withdraw Donations</h3>
-
-                    <form method="POST" action="{{ route('admin.fundraising_withdrawals.store', $fundraising) }}"
-                        enctype="multipart/form-data">
-                        @csrf
-
-                        <div>
-                            <x-input-label for="bank_name" :value="__('bank_name')" />
-                            <x-text-input id="bank_name" class="mt-1 block w-full" type="text" name="bank_name"
-                                :value="old('bank_name')" required autofocus autocomplete="bank_name" />
-                            <x-input-error :messages="$errors->get('bank_name')" class="mt-2" />
-                        </div>
-
-                        <div class="mt-4">
-                            <x-input-label for="bank_account_name" :value="__('bank_account_name')" />
-                            <x-text-input id="bank_account_name" class="mt-1 block w-full" type="text"
-                                name="bank_account_name" :value="old('bank_account_name')" required autofocus
-                                autocomplete="bank_account_name" />
-                            <x-input-error :messages="$errors->get('bank_account_name')" class="mt-2" />
-                        </div>
-
-                        <div class="mt-4">
-                            <x-input-label for="bank_account_number" :value="__('bank_account_number')" />
-                            <x-text-input id="bank_account_number" class="mt-1 block w-full" type="text"
-                                name="bank_account_number" :value="old('bank_account_number')" required autofocus
-                                autocomplete="bank_account_number" />
-                            <x-input-error :messages="$errors->get('bank_account_number')" class="mt-2" />
-                        </div>
-
-                        <div class="mt-4 flex items-center justify-end">
-
-                            <button type="submit" class="rounded-full bg-indigo-700 px-6 py-4 font-bold text-white">
-                                Request Withdraw
-                            </button>
-                        </div>
-                    </form>
-                @endif
-
+                <div class="flex flex-row items-center justify-between">
+                    <div class="flex flex-col">
+                        <h3 class="text-xl font-bold text-indigo-950">Deskripsi</h3>
+                        <p>{{ $fundraising->about }}</p>
+                    </div>
+                </div>
                 <hr class="my-5">
+
+                @role('fundraiser')
+                    @if (!$hasRequestedWithdrawal)
+                        <h3 class="text-2xl font-bold text-indigo-950">Withdraw Donations</h3>
+
+                        <form method="POST" action="{{ route('admin.fundraising_withdrawals.store', $fundraising) }}"
+                            enctype="multipart/form-data">
+                            @csrf
+
+                            <div>
+                                <x-input-label for="bank_name" :value="__('bank_name')" />
+                                <x-text-input id="bank_name" class="mt-1 block w-full" type="text" name="bank_name"
+                                    :value="old('bank_name')" required autofocus autocomplete="bank_name" />
+                                <x-input-error :messages="$errors->get('bank_name')" class="mt-2" />
+                            </div>
+
+                            <div class="mt-4">
+                                <x-input-label for="bank_account_name" :value="__('bank_account_name')" />
+                                <x-text-input id="bank_account_name" class="mt-1 block w-full" type="text"
+                                    name="bank_account_name" :value="old('bank_account_name')" required autofocus
+                                    autocomplete="bank_account_name" />
+                                <x-input-error :messages="$errors->get('bank_account_name')" class="mt-2" />
+                            </div>
+
+                            <div class="mt-4">
+                                <x-input-label for="bank_account_number" :value="__('bank_account_number')" />
+                                <x-text-input id="bank_account_number" class="mt-1 block w-full" type="text"
+                                    name="bank_account_number" :value="old('bank_account_number')" required autofocus
+                                    autocomplete="bank_account_number" />
+                                <x-input-error :messages="$errors->get('bank_account_number')" class="mt-2" />
+                            </div>
+
+                            <div class="mt-4 flex items-center justify-end">
+
+                                <button type="submit" class="rounded-full bg-indigo-700 px-6 py-4 font-bold text-white">
+                                    Request Withdraw
+                                </button>
+                            </div>
+                        </form>
+                    @endif
+
+                    <hr class="my-5">
+                @endrole
 
                 <div class="flex flex-row items-center justify-between">
                     <div class="flex flex-col">
