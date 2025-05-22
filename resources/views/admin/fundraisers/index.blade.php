@@ -65,16 +65,6 @@
                                         </div>
                                     </div>
                                 </x-modal>
-                                {{-- <div class="hidden flex-row items-center gap-x-3 md:flex">
-                                    <form action="{{ route('admin.fundraisers.destroy', $fundraiser->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                            class="rounded-full bg-red-700 px-6 py-4 font-bold text-white">
-                                            Delete
-                                        </button>
-                                    </form>
-                                </div> --}}
                             @else
                                 <span class="w-fit rounded-full bg-orange-500 px-3 py-2 text-sm font-bold text-white">
                                     PENDING
