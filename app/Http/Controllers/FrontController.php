@@ -175,7 +175,7 @@ class FrontController extends Controller
                     'amount' => $total,
                     'name' => $volunteer->name,
                     'description' => 'Pembayaran untuk pendaftaran volunteer',
-                    'expired_time' => now()->addMinutes(2)->toIso8601String(),
+                    'expired_time' => now()->addMinutes(60)->toIso8601String(),
                     'callback_url' => route('payment.callback'),
                 ]
             );
