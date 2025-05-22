@@ -22,7 +22,7 @@ class FundraiserController extends Controller
 
         $fundraiserStatus = null;
 
-        if($user->fundraiser()->exists()){
+        if ($user->fundraiser()->exists()) {
             $isFundraiserActive = $user->fundraiser->is_active;
             $fundraiserStatus = $isFundraiserActive ? 'Active' : 'Pending';
         }
@@ -70,7 +70,7 @@ class FundraiserController extends Controller
         //
         $user = $fundraiser->user;
 
-        DB::transaction(function() use ($fundraiser, $user) {
+        DB::transaction(function () use ($fundraiser, $user) {
 
             $fundraiser->update([
                 'is_active' => true
@@ -89,6 +89,9 @@ class FundraiserController extends Controller
      */
     public function destroy(Fundraiser $fundraiser)
     {
-        //
+        $fundraiser->delete();
+
+        return redirect()->route('admin.fundraisers.index')
+            ->with('success', 'Fundraiser berhasil dihapus.');
     }
 }
