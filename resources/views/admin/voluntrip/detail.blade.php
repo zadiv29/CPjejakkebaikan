@@ -40,64 +40,65 @@
                 </form>
                 <!-- Detail -->
                 <div class="relative space-y-3 rounded-md border p-2 pb-14 text-sm text-gray-700"
-                    x-data="{ isEdit: false, dateValue: '{{ $dateForInput }}', timeStart: '{{ $timeStartInput }}', timeEnd: '{{ $timeEndInput }}' }">
+                    x-data="{ isEdit: false, dateValue: '{{ $dateForInput }}', timeStart: '{{ $timeStartInput }}', timeEnd: '{{ $timeEndInput }}', isActive: {{ $voluntrip->is_active ? 'true' : 'false' }} }">
                     <div class="relative grid grid-cols-[30%_auto] items-center rounded-md border">
                         <span class="cursor-default p-3">Fundraiser</span>
                         <p class="bg-gray-100 p-3">{{ $voluntrip->fundraiser->user->name ?? '-' }}</p>
                         <span class="cursor-default p-3">Tanggal Mulai</span>
                         <div class="relative h-full">
-                            <span x-show="!isEdit" x-transition
+                            <span x-show="!isEdit || isActive" x-transition
                                 class="absolute left-0 top-0 flex h-full w-full cursor-not-allowed items-center bg-gray-100 p-3 text-gray-700">
                                 {{ $date }}
                             </span>
 
-                            <input x-show="isEdit" x-transition type="date" x-model="dateValue"
+                            <input x-show="isEdit && !isActive" x-transition type="date" x-model="dateValue"
                                 class="absolute left-0 top-0 h-full w-full cursor-text border-0 bg-white ring-2 ring-inset transition-all duration-300 ease-in-out focus:ring-2 focus:ring-inset"
                                 name="start_date" form="update-voluntrip-{{ $voluntrip['id'] }}">
                         </div>
                         <span class="cursor-default p-3">Waktu Mulai</span>
                         <div class="relative h-full">
-                            <span x-show="!isEdit" x-transition
+                            <span x-show="!isEdit || isActive" x-transition
                                 class="absolute left-0 top-0 flex h-full w-full cursor-not-allowed items-center bg-gray-100 px-3 capitalize text-gray-700">
                                 {{ $timeStart }}
                             </span>
 
                             <!-- Input jam -->
-                            <input x-show="isEdit" x-transition type="time" x-model="timeStart"
+                            <input x-show="isEdit && !isActive" x-transition type="time" x-model="timeStart"
                                 class="absolute left-0 top-0 h-full w-full cursor-text border-0 bg-white capitalize ring-2 ring-inset focus:ring-2 focus:ring-inset"
                                 name="start_time" form="update-voluntrip-{{ $voluntrip->id }}"
                                 form="update-voluntrip-{{ $voluntrip['id'] }}">
                         </div>
                         <span class="cursor-default p-3">Waktu Selesai</span>
                         <div class="relative h-full">
-                            <span x-show="!isEdit" x-transition
+                            <span x-show="!isEdit || isActive" x-transition
                                 class="absolute left-0 top-0 flex h-full w-full cursor-not-allowed items-center bg-gray-100 px-3 capitalize text-gray-700">
                                 {{ $timeEnd }}
                             </span>
 
                             <!-- Input jam -->
-                            <input x-show="isEdit" x-transition type="time" x-model="timeEnd"
+                            <input x-show="isEdit && !isActive" x-transition type="time" x-model="timeEnd"
                                 class="absolute left-0 top-0 h-full w-full cursor-text border-0 bg-white capitalize ring-2 ring-inset focus:ring-2 focus:ring-inset"
                                 name="end_time" form="update-voluntrip-{{ $voluntrip->id }}">
                         </div>
                         <span class="cursor-default p-3">Harga Tiket</span>
                         <div class="relative h-full">
-                            <span x-show="!isEdit" x-transition
+                            <span x-show="!isEdit || isActive" x-transition
                                 class="absolute left-0 top-0 flex h-full w-full cursor-not-allowed items-center bg-gray-100 px-3 capitalize text-gray-700">
                                 Rp{{ number_format($voluntrip->ticket_price, 0, ',', '.') }}
                             </span>
-                            <input x-show="isEdit" x-transition
+                            <input x-show="isEdit && !isActive" x-transition
                                 x-model="'{{ number_format($voluntrip['ticket_price'], 0, ',', '.') }}'"
                                 class="absolute left-0 top-0 h-full w-full cursor-text border-0 bg-white capitalize ring-2 ring-inset focus:ring-2 focus:ring-inset"
                                 name="ticket_price" id="ticket_price" form="update-voluntrip-{{ $voluntrip->id }}">
                         </div>
                         <span class="cursor-default p-3">Total Tiket</span>
                         <div class="relative h-full">
-                            <span x-show="!isEdit" x-transition
+                            <span x-show="!isEdit || isActive" x-transition
                                 class="absolute left-0 top-0 flex h-full w-full cursor-not-allowed items-center bg-gray-100 px-3 capitalize text-gray-700">
                                 {{ $voluntrip['total_ticket'] }}
                             </span>
-                            <input x-show="isEdit" x-transition x-model="'{{ $voluntrip['total_ticket'] }}'"
+                            <input x-show="isEdit && !isActive" x-transition
+                                x-model="'{{ $voluntrip['total_ticket'] }}'"
                                 class="absolute left-0 top-0 h-full w-full cursor-text border-0 bg-white capitalize ring-2 ring-inset focus:ring-2 focus:ring-inset"
                                 name="total_ticket" form="update-voluntrip-{{ $voluntrip['id'] }}">
                         </div>
