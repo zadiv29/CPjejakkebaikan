@@ -33,13 +33,33 @@
                                 class="rounded-full bg-indigo-700 px-6 py-4 font-bold text-white">
                                 Edit
                             </a>
-                            <form action="{{ route('admin.categories.destroy', $category) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="rounded-full bg-red-700 px-6 py-4 font-bold text-white">
-                                    Delete
-                                </button>
-                            </form>
+                            <button x-data=""
+                                x-on:click.prevent="$dispatch('open-modal', 'confirm-delete')"
+                                class="rounded-full bg-red-700 px-6 py-4 font-bold text-white">
+                                Delete
+                            </button>
+                            <x-modal name="confirm-delete" focusable>
+                                <div class="p-6">
+                                    <h2 class="text-lg font-semibold text-gray-900">Yakin ingin menghapus?</h2>
+                                    <p class="mt-2 text-sm text-gray-600">Tindakan ini tidak dapat dibatalkan.</p>
+
+                                    <div class="mt-6 flex justify-end space-x-2">
+                                        <x-secondary-button x-on:click="$dispatch('close')">
+                                            Batal
+                                        </x-secondary-button>
+
+                                        <form action="{{ route('admin.categories.destroy', $category) }}"
+                                            method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <x-danger-button type="submit">
+                                                Delete
+                                            </x-danger-button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </x-modal>
+
                         </div>
                     </div>
                 @empty
