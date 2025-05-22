@@ -14,6 +14,15 @@ class StoreFundraisingRequest extends FormRequest
         return $this->user()->hasAnyRole(['fundraiser']);
     }
 
+    protected function prepareForValidation()
+    {
+        if ($this->has('target_amount')) {
+            $this->merge([
+                'target_amount' => (int) str_replace('.', '', $this->target_amount),
+            ]);
+        }
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
