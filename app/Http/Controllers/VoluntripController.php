@@ -80,6 +80,12 @@ class VoluntripController extends Controller
 
     public function update(Request $request, Voluntrip $voluntrip)
     {
+        if ($request->has('ticket_price')) {
+            $request->merge([
+                'ticket_price' => (int) str_replace('.', '', $request->input('ticket_price')),
+            ]);
+        }
+
         if ($request->input('action') === 'approve') {
             $voluntrip->is_active = true;
             $voluntrip->event_status = 'active';

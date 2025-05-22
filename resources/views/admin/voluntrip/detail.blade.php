@@ -86,9 +86,10 @@
                                 class="absolute left-0 top-0 flex h-full w-full cursor-not-allowed items-center bg-gray-100 px-3 capitalize text-gray-700">
                                 Rp{{ number_format($voluntrip->ticket_price, 0, ',', '.') }}
                             </span>
-                            <input x-show="isEdit" x-transition x-model="'{{ $voluntrip['ticket_price'] }}'"
+                            <input x-show="isEdit" x-transition
+                                x-model="'{{ number_format($voluntrip['ticket_price'], 0, ',', '.') }}'"
                                 class="absolute left-0 top-0 h-full w-full cursor-text border-0 bg-white capitalize ring-2 ring-inset focus:ring-2 focus:ring-inset"
-                                name="ticket_price" form="update-voluntrip-{{ $voluntrip->id }}">
+                                name="ticket_price" id="ticket_price" form="update-voluntrip-{{ $voluntrip->id }}">
                         </div>
                         <span class="cursor-default p-3">Total Tiket</span>
                         <div class="relative h-full">
@@ -208,3 +209,12 @@
         </div>
     </div>
 </x-app-layout>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const input = document.getElementById('ticket_price');
+        input.addEventListener('input', function() {
+            let value = input.value.replace(/\D/g, '');
+            input.value = new Intl.NumberFormat('id-ID').format(value);
+        });
+    });
+</script>
