@@ -14,6 +14,15 @@ class StoreVoluntripRequest extends FormRequest
         return $this->user()->hasAnyRole(['owner|fundraiser']);
     }
 
+    protected function prepareForValidation()
+    {
+        if ($this->has('ticket_price')) {
+            $this->merge([
+                'ticket_price' => (int) str_replace('.', '', $this->ticket_price),
+            ]);
+        }
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *

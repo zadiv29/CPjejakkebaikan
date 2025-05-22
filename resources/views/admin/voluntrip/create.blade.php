@@ -70,7 +70,7 @@
 
                     <div class="mt-4">
                         <x-input-label for="ticket_price" :value="__('Ticket Price')" />
-                        <x-text-input id="ticket_price" class="mt-1 block w-full" type="number" name="ticket_price"
+                        <x-text-input id="ticket_price" class="mt-1 block w-full" type="text" name="ticket_price"
                             :value="old('ticket_price')" required autofocus autocomplete="ticket_price" />
                         <x-input-error :messages="$errors->get('ticket_price')" class="mt-2" />
                     </div>
@@ -85,3 +85,13 @@
         </div>
     </div>
 </x-app-layout>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const input = document.getElementById('ticket_price');
+        input.addEventListener('input', function() {
+            let value = input.value.replace(/\D/g, '');
+            input.value = new Intl.NumberFormat('id-ID').format(value);
+        });
+    });
+</script>
