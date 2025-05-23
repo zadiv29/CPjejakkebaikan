@@ -12,8 +12,8 @@
     <!-- Horizontal Scroll Carousel -->
     <!-- Carousel Wrapper -->
     <div class="mt-[14px] overflow-x-auto scroll-smooth px-4">
-        <div class="flex w-max snap-x snap-mandatory scroll-pl-6 gap-4 pb-4">
-            @forelse($voluntrips as $voluntrip)
+        @forelse($voluntrips as $voluntrip)
+            <div class="flex w-max snap-x snap-mandatory scroll-pl-6 gap-4 pb-4">
                 @if ($voluntrip->event_status === 'active')
                     <div
                         class="card-item flex w-[260px] snap-start flex-col overflow-hidden rounded-lg border bg-white shadow-md">
@@ -54,13 +54,14 @@
                     </div>
                 @endif
             @empty
-                <div class="flex flex-col items-center justify-center gap-3 p-8 text-center text-sm text-gray-500">
+                <div
+                    class="flex w-full flex-col items-center justify-center gap-3 p-8 text-center text-sm text-gray-500">
                     <lottie-player src="{{ asset('lottie/empty.json') }}" background="transparent" speed="1"
                         style="width: 200px; height: 200px;" loop autoplay>
                     </lottie-player>
                     <p class="font-medium">Belum ada pilihan donasi untuk kamu saat ini.</p>
                 </div>
-            @endforelse
-        </div>
+        @endforelse
+    </div>
     </div>
 </section>
