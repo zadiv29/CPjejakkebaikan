@@ -61,7 +61,7 @@
                     </lottie-player>
                     <p class="font-medium">Belum ada pilihan donasi untuk kamu saat ini.</p>
                 </div>
+            </div>
         @endforelse
-    </div>
     </div>
 </section>
