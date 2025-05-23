@@ -1,7 +1,13 @@
-<section id="voluntrip-section" class="mt-8">
-    <div class="flex items-center justify-between px-4">
-        <h2 class="text-lg font-bold">Voluntrip <br> Relawan + Jalan-Jalan</h2>
-        <a href="" class="rounded-full bg-[#E8E9EE] p-[6px_12px] text-sm font-semibold">Explore All</a>
+<section id="voluntrip-section" class="mt-8 px-2">
+    <div class="flex items-center justify-between rounded-md bg-gray-100 px-4 py-2 shadow-md">
+        <h2 class="text-[14px] font-bold sm:text-lg">Voluntrip Relawan + Jalan-Jalan</h2>
+        <a href="#" class="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 hover:underline">
+            Explore All
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+        </a>
     </div>
     <!-- Horizontal Scroll Carousel -->
     <!-- Carousel Wrapper -->
@@ -48,7 +54,12 @@
                     </div>
                 @endif
             @empty
-                <p>Belum Ada Event Tersedia</p>
+                <div class="flex flex-col items-center justify-center gap-3 p-8 text-center text-sm text-gray-500">
+                    <lottie-player src="{{ asset('lottie/empty.json') }}" background="transparent" speed="1"
+                        style="width: 200px; height: 200px;" loop autoplay>
+                    </lottie-player>
+                    <p class="font-medium">Belum ada pilihan donasi untuk kamu saat ini.</p>
+                </div>
             @endforelse
         </div>
     </div>
