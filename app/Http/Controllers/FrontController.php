@@ -184,6 +184,7 @@ class FrontController extends Controller
             $paymentData = $response->json();
             $data = $paymentData['data'];
 
+            $expiredAt = Carbon::parse($data['expired_time'])->format('Y-m-d H:i:s');
 
             $payment = VolunteerPayment::create([
                 'uuid' => $data['uuid'],
@@ -192,7 +193,7 @@ class FrontController extends Controller
                 'payment_method' => $data['payment_method'],
                 'payment_channel' => $data['payment_channel'],
                 'va_number' => $data['va_number'],
-                'expired_at' => $data['expired_time'],
+                'expired_at' => $expiredAt,
                 'status' => 'pending',
             ]);
             foreach ($relatedVolunteers as $v) {
