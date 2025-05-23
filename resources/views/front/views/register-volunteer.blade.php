@@ -64,7 +64,8 @@
                 </div>
             </div>
         </section>
-        <form action="{{ route('volunteers.store') }}" method="POST">
+        <form x-data="{ isSubmitting: false }" @submit.prevent="if (!isSubmitting) { isSubmitting = true; $el.submit(); }"
+            action="{{ route('volunteers.store') }}" method="POST">
             @csrf
 
             <section class="flex flex-col gap-3">
@@ -159,9 +160,10 @@
                     <input type="hidden" name="voluntrip_id" value="{{ $voluntrip->id }}">
 
                     <div class="mt-4">
-                        <button type="submit"
-                            class="w-full rounded bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700">
-                            Daftar dan Buat Pembayaran
+                        <button type="submit" :disabled="isSubmitting"
+                            class="w-full rounded bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700 disabled:bg-gray-400">
+                            <span x-show="!isSubmitting">Daftar dan Buat Pembayaran</span>
+                            <span x-show="isSubmitting">Memproses...</span>
                         </button>
                     </div>
                 </div>
