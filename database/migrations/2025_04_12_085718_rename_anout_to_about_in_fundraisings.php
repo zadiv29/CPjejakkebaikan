@@ -8,15 +8,15 @@ class RenameAnoutToAboutInFundraisings extends Migration
 {
     public function up()
     {
-        Schema::table('fundraisings', function (Blueprint $table) {
-            $table->renameColumn('anout', 'about');
-        });
+        // Schema::table('fundraisings', function (Blueprint $table) {
+        //     $table->renameColumn('anout', 'about');
+        // });
     }
 
     public function down()
     {
-        Schema::table('fundraisings', function (Blueprint $table) {
-            $table->renameColumn('about', 'anout');
-        });
+        // Schema::table('fundraisings', function (Blueprint $table) {
+        //     $table->renameColumn('about', 'anout');
+        // });
     }
 }
