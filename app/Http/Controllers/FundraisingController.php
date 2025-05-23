@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\fundraiser;
-use App\Models\fundraising;
+use App\Models\Fundraiser;
+use App\Models\Fundraising;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +28,7 @@ class FundraisingController extends Controller
 
         $fundraisingQuery = Fundraising::with(['category', 'fundraiser', 'donaturs'])->orderByDesc('id');
 
-        if($user->hasRole('fundraiser')){
+        if ($user->hasRole('fundraiser')) {
             $fundraisingQuery->whereHas('fundraiser', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             });
@@ -46,19 +46,19 @@ class FundraisingController extends Controller
     {
         //
         $categories = Category::all();
-        return view ('admin.fundraisings.create', compact('categories'));
+        return view('admin.fundraisings.create', compact('categories'));
     }
 
-    public function activate_fundraising(Fundraising $fundraising){
+    public function activate_fundraising(Fundraising $fundraising)
+    {
 
         DB::transaction(function () use ($fundraising) {
             $fundraising->update([
-                'is_active'=>true
+                'is_active' => true
             ]);
         });
 
         return redirect()->route('admin.fundraisings.show', $fundraising);
-        
     }
 
     /**
@@ -73,22 +73,21 @@ class FundraisingController extends Controller
 
             $validated = $request->validated();
 
-            if($request->hasFile('thumbnail')){
+            if ($request->hasFile('thumbnail')) {
                 $thumbnailPath = $request->file('thumbnail')->store('thumbnails', 'public');
-                $validated ['thumbnail'] = $thumbnailPath;
+                $validated['thumbnail'] = $thumbnailPath;
             }
 
             $validated['slug'] = Str::slug($validated['name']);
 
             $validated['fundraiser_id'] = $fundraiser->id;
             $validated['is_active'] = false;
-            $validated['has_finished'] = false;     
+            $validated['has_finished'] = false;
 
             $fundraising = Fundraising::create($validated);
         });
 
         return redirect()->route('admin.fundraisings.index');
-
     }
 
     /**
@@ -98,16 +97,16 @@ class FundraisingController extends Controller
     {
         //
         $totalDonations = $fundraising->totalReachedAmount();
-        $goalReached = $totalDonations>= $fundraising->target_amount;
+        $goalReached = $totalDonations >= $fundraising->target_amount;
 
         $hasRequestedWithdrawal = $fundraising->withdrawals()->exists();
 
         $percentage = ($totalDonations / $fundraising->target_amount) * 100;
-        if($percentage > 100){
+        if ($percentage > 100) {
             $percentage = 100;
         }
 
-        return view ('admin.fundraisings.show', compact('hasRequestedWithdrawal','fundraising', 'goalReached', 'percentage', 'totalDonations'));
+        return view('admin.fundraisings.show', compact('hasRequestedWithdrawal', 'fundraising', 'goalReached', 'percentage', 'totalDonations'));
     }
 
     /**
@@ -117,7 +116,7 @@ class FundraisingController extends Controller
     {
         //
         $categories = Category::all();
-        return view ('admin.fundraisings.edit', compact('fundraising', 'categories'));
+        return view('admin.fundraisings.edit', compact('fundraising', 'categories'));
     }
 
     /**
@@ -129,7 +128,7 @@ class FundraisingController extends Controller
 
             $validated = $request->validated();
 
-            if($request->hasFile('thumbnail')){
+            if ($request->hasFile('thumbnail')) {
                 $thumbnailPath = $request->file('thumbnail')->store('thumbnails', 'public');
                 $validated['thumbnail'] = $thumbnailPath;
             }
@@ -140,12 +139,11 @@ class FundraisingController extends Controller
         });
 
         return redirect()->route('admin.fundraisings.show', $fundraising);
-
     }
-    
-        //
 
-    
+    //
+
+
 
     /**
      * Remove the specified resource from storage.
@@ -159,8 +157,7 @@ class FundraisingController extends Controller
             $fundraising->delete();
             DB::commit();
             return redirect()->route('admin.fundraisings.index');
-        }
-        catch(\Exception$e){
+        } catch (\Exception $e) {
             DB::rollback();
             return redirect()->route('admin.fundraisings.index');
         }
