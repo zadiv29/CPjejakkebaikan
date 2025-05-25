@@ -137,4 +137,18 @@ class VoluntripController extends Controller
                 ->with('success', 'Voluntrip updated successfully.');
         }
     }
+
+    public function destroy(Voluntrip $voluntrip)
+    {
+        DB::beginTransaction();
+
+        try {
+            $voluntrip->delete();
+            DB::commit();
+            return redirect()->route('admin.voluntrip.index');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->route('admin.categories.index');
+        }
+    }
 }
