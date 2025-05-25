@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->unsignedBigInteger('ticket_price');
             $table->enum('event_status', ['pending', 'active', 'completed'])->default('pending');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
