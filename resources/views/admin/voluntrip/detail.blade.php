@@ -192,14 +192,18 @@
                             </button>
                         @endif
                         @role('owner')
-                            <button class="rounded-md border bg-red-400 px-5 py-[2px] text-white">
-                                Delete
-                            </button>
+                            <form action="{{ route('admin.voluntrip.destroy', $voluntrip) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button x-data=""
+                                    x-on:click.prevent="$dispatch('open-modal', 'confirm-delete')" type="submit"
+                                    class="rounded-md border bg-red-400 px-5 py-[2px] text-white">
+                                    Delete
+                                </button>
+                            </form>
                         @endrole
                     </div>
                 </div>
-
-
             </div>
 
             <!-- Tentang Event -->
@@ -209,6 +213,28 @@
             </div>
         </div>
     </div>
+
+    {{-- //ANCHOR Modal --}}
+    <x-modal name="confirm-delete" focusable>
+        <div class="p-6">
+            <h2 class="text-lg font-semibold text-gray-900">Yakin ingin menghapus voluntrip?</h2>
+            <p class="mt-2 text-sm text-gray-600">Tindakan ini tidak dapat dibatalkan.</p>
+
+            <div class="mt-6 flex justify-end space-x-2">
+                <x-secondary-button x-on:click="$dispatch('close')">
+                    Batal
+                </x-secondary-button>
+
+                <form action="{{ route('admin.voluntrip.destroy', $voluntrip) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <x-danger-button type="submit">
+                        Delete
+                    </x-danger-button>
+                </form>
+            </div>
+        </div>
+    </x-modal>
 </x-app-layout>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
