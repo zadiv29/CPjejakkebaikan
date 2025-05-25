@@ -71,14 +71,6 @@
                             </div>
                             <p class="text-[13px]">{{ $voluntrip->about }}</p>
                         </section>
-                        <section class="flex flex-col gap-3 break-words px-[24px]">
-                            <div class="flex min-h-fit items-center gap-2">
-                                <hr class="h-5 w-1 rounded-r-md bg-blue-500">
-                                <h4 class="text-md font-medium">Manfaat/Benefit Program</h4>
-                            </div>
-                            {{-- //NOTE belum ada data untuk manfaat di db  --}}
-                            <p class="text-[13px]">{{ $voluntrip->about }}</p>
-                        </section>
                     </section>
                     {{-- #ANCHOR Tiket --}}
                     <section x-data="{ qty: 1, max: {{ $voluntrip->total_ticket }}, price: {{ $voluntrip->ticket_price }} }" x-show="tab === 'tiket'"
