@@ -109,6 +109,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/my-withdrawals/details/{fundraisingWithdrawal}', [DashboardController::class, 'my_withdrawals_details'])
             ->name('my-withdrawals.details');
 
+
+        // SECTION Voluntrip Section
         Route::resource('/voluntrip', VoluntripController::class)
             ->middleware('role:owner|fundraiser');
     });
