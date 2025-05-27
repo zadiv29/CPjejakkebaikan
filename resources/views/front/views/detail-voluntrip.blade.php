@@ -34,9 +34,8 @@
                             <span class="flex items-center gap-2 text-[12px] font-normal"><x-icon.time />{{ $timeStart }}
                                 -
                                 {{ $timeEnd }}</span>
-                            <span class="flex items-center gap-2 text-[12px] font-normal"><x-icon.location /> Jalan Tluki,
-                                Condong Catur
-                                Yogyakarta</span>
+                            <span class="flex items-center gap-2 text-[12px] font-normal"><x-icon.location />Belum
+                                ditentukan</span>
 
                         </div>
                     </section>
