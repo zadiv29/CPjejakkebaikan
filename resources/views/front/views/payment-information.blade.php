@@ -161,7 +161,8 @@
             .then(res => res.json())
             .then(data => {
                 if (data.status === 'paid') {
-                    window.location.href = "{{ route('payment.already_verified') }}";
+                    window.location.href =
+                        "{{ route('payment.already_verified', ['payment' => $payment->uuid]) }}";
                 }
 
                 if (data.status === 'expired') {
