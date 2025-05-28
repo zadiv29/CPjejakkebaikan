@@ -61,7 +61,7 @@
                             class="font-semibold text-red-500">{{ \Carbon\Carbon::parse($payment->expired_at)->translatedFormat('d F Y, H:i') }}</span>
                     </div>
                     <div class="flex flex-col justify-between sm:flex-row sm:items-center">
-                        <span class="font-medium">Batas Waktu Pembayaran</span>
+                        <span class="font-medium">Status Pembayaran</span>
                         <span
                             class="w-fit rounded-md bg-red-200 px-2 font-semibold capitalize text-red-600">{{ $payment->status }}</span>
                     </div>
