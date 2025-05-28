@@ -5,18 +5,15 @@
 @section('content')
     <main class="flex min-h-screen w-full flex-col items-center">
         <div class="mx-auto max-w-xl space-y-7 rounded-lg bg-white p-4 shadow-md">
-            <header class="white relative grid grid-cols-1 gap-5 rounded-lg border-2 border-green-300 px-3 py-2">
+            <header class="white relative grid grid-cols-1 rounded-lg border-2 border-green-300 px-3 py-2 pb-10">
                 <lottie-player src="{{ asset('lottie/payment-successfuly.json') }}" background="transparent" speed="1"
                     class="sm:h-[150px] sm:w-full" loop autoplay>
                 </lottie-player>
                 <div class="flex flex-col justify-center">
-                    <section>
+                    <section class="text-center">
                         <h1 class="font-bold text-gray-700 sm:text-2xl">Pembayaran Berhasil</h1>
                         <p class="text-sm text-gray-700 sm:text-base">Silahkan cek email anda untuk melihat detail Tiket</p>
                     </section>
-                    <lottie-player src="{{ asset('lottie/line.json') }}" background="transparent" speed="0.5"
-                        style="width: 100%; height: fit-content;" loop autoplay>
-                    </lottie-player>
                 </div>
             </header>
             <section class="detail pembayaran relative top-2 rounded-lg border-2">
