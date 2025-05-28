@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreVoluntripRequest;
+use App\Mail\SendTicketMail;
 use App\Mail\VolunteerVerificationMail;
 use App\Models\Volunteer;
 use App\Models\VolunteerPayment;
@@ -255,6 +256,11 @@ class FrontController extends Controller
                             $voluntrip->decrement('total_ticket', $ticketCount);
                         }
                     }
+                }
+                foreach ($volunteers as $volunteer) {
+                    // Kirim email ke alamat email masing-masing volunteer
+                    // Mailable sudah menerima $volunteer, $voluntrip, $payment
+                    Mail::to($volunteer->email)->send(new SendTicketMail($volunteer, $voluntrip, $payment));
                 }
             }
         }
