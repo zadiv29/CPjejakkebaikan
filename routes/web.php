@@ -51,9 +51,9 @@ Route::get('/payment/information/{payment}', [FrontController::class, 'informati
 
 Route::get('/payment/status/{payment}', [FrontController::class, 'getStatus'])->name('payment.status');
 
-Route::view('/payment/already-verified', 'front.views.already-paid')->name('payment.already_verified');
+Route::get('/payment/already-verified/{payment}', [FrontController::class, 'alreadyPaid'])->name('payment.already_verified');
 
-Route::view('/payment/already-expired', 'front.views.already-expired')->name('payment.already_expired');
+Route::get('/payment/already-expired/{payment}', [FrontController::class, 'expiredPage'])->name('payment.already_expired');
 
 
 
