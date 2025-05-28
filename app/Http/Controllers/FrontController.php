@@ -149,14 +149,20 @@ class FrontController extends Controller
         // Jika sudah punya pembayaran, arahkan ke halaman pembayaran
         if ($volunteer->payment) {
             if ($volunteer->payment->status === 'paid') {
-                return view('front.views.already-paid'); // Sudah dibayar
+                return redirect()->route('payment.already_verified', [
+                    'payment' => $volunteer->payment->uuid
+                ]); // Sudah dibayar
             }
 
             if ($volunteer->payment->status === 'expired') {
-                return view('front.views.already-expired');
+                return redirect()->route('payment.already_expired', [
+                    'payment' => $volunteer->payment->uuid
+                ]);
             }
 
-            return redirect()->route('payment.information', ['payment' => $volunteer->payment->uuid]); // VA sudah dibuat, belum dibayar
+            return redirect()->route('payment.information', [
+                'payment' => $volunteer->payment->uuid
+            ]);
         }
 
         // Ambil semua anggota kelompok dari voluntrip ini yang belum punya payment
@@ -208,8 +214,14 @@ class FrontController extends Controller
 
     public function information(VolunteerPayment $payment)
     {
+        $numVolunteers = $payment->volunteers->count();
+        $volunteer = $payment->volunteers->firstOrFail();
+        $voluntrip = $volunteer->voluntrip;
+
         return view('front.views.payment-information', [
-            'payment' => $payment
+            'payment' => $payment,
+            'numVolunteers' => $numVolunteers,
+            'voluntrip' => $voluntrip
         ]);
     }
 
@@ -247,5 +259,29 @@ class FrontController extends Controller
             }
         }
         return response()->json(['message' => 'Callback received']);
+    }
+
+    public function expiredPage(VolunteerPayment $payment)
+    {
+        $numVolunteers = $payment->volunteers->count();
+        $volunteer = $payment->volunteers->firstOrFail();
+        $voluntrip = $volunteer->voluntrip;
+        return view('front.views.already-expired', [
+            'numVolunteers' => $numVolunteers,
+            'payment' => $payment,
+            'voluntrip' => $voluntrip
+        ]);
+    }
+
+    public function alreadyPaid(VolunteerPayment $payment)
+    {
+        $numVolunteers = $payment->volunteers->count();
+        $volunteer = $payment->volunteers->firstOrFail();
+        $voluntrip = $volunteer->voluntrip;
+        return view('front.views.already-paid', [
+            'numVolunteers' => $numVolunteers,
+            'payment' => $payment,
+            'voluntrip' => $voluntrip
+        ]);
     }
 }
