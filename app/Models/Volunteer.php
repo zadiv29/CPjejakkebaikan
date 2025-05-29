@@ -24,6 +24,6 @@ class Volunteer extends Model
 
     public function payment()
     {
-        return $this->belongsTo(VolunteerPayment::class, 'volunteer_payments_id');
+        return $this->belongsTo(Payment::class, 'volunteer_payments_id');
     }
 }

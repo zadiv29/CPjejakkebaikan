@@ -3,7 +3,7 @@
 namespace App\Mail;
 
 use App\Models\Volunteer;
-use App\Models\VolunteerPayment;
+use App\Models\Payment;
 use App\Models\Voluntrip;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -23,7 +23,7 @@ class SendTicketMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(Volunteer $volunteer, Voluntrip $voluntrip, VolunteerPayment $payment)
+    public function __construct(Volunteer $volunteer, Voluntrip $voluntrip, Payment $payment)
     {
         $this->volunteer = $volunteer;
         $this->voluntrip = $voluntrip;

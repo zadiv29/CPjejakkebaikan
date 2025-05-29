@@ -6,7 +6,7 @@ use App\Http\Requests\StoreVoluntripRequest;
 use App\Mail\SendTicketMail;
 use App\Mail\VolunteerVerificationMail;
 use App\Models\Volunteer;
-use App\Models\VolunteerPayment;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Fundraising;
@@ -193,7 +193,7 @@ class FrontController extends Controller
 
             $expiredAt = Carbon::parse($data['expired_time'])->format('Y-m-d H:i:s');
 
-            $payment = VolunteerPayment::create([
+            $payment = Payment::create([
                 'uuid' => $data['uuid'],
                 'merchant_trx_id' => $data['merchant_trx_id'],
                 'amount' => $data['amount'],
@@ -213,7 +213,7 @@ class FrontController extends Controller
         return back()->withErrors('Gagal membuat Virtual Account. Silakan coba lagi.');
     }
 
-    public function information(VolunteerPayment $payment)
+    public function information(Payment $payment)
     {
         $numVolunteers = $payment->volunteers->count();
         $volunteer = $payment->volunteers->firstOrFail();
@@ -226,7 +226,7 @@ class FrontController extends Controller
         ]);
     }
 
-    public function getStatus(VolunteerPayment $payment)
+    public function getStatus(Payment $payment)
     {
         return response()->json(['status' => $payment->status]);
     }
@@ -237,7 +237,7 @@ class FrontController extends Controller
         $uuid = $request->input('uuid');
         $status = $request->input('status');
 
-        $payment = VolunteerPayment::where('uuid', $uuid)->first();
+        $payment = Payment::where('uuid', $uuid)->first();
 
         if ($payment) {
             $payment->update([
@@ -267,7 +267,7 @@ class FrontController extends Controller
         return response()->json(['message' => 'Callback received']);
     }
 
-    public function expiredPage(VolunteerPayment $payment)
+    public function expiredPage(Payment $payment)
     {
         $numVolunteers = $payment->volunteers->count();
         $volunteer = $payment->volunteers->firstOrFail();
@@ -279,7 +279,7 @@ class FrontController extends Controller
         ]);
     }
 
-    public function alreadyPaid(VolunteerPayment $payment)
+    public function alreadyPaid(Payment $payment)
     {
         $numVolunteers = $payment->volunteers->count();
         $volunteer = $payment->volunteers->firstOrFail();
