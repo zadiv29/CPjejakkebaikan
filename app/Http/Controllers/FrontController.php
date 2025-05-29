@@ -177,7 +177,7 @@ class FrontController extends Controller
             ->post(
                 'https://api.ommopay.id/v1/virtual_account',
                 [
-                    'merchant_trx_id' => 'ID_' . time(),
+                    'merchant_trx_id' => 'VL_' . time(),
                     'payment_channel' => $paymentChannel,
                     'amount' => $total,
                     'description' => 'Pembayaran untuk pendaftaran volunteer',
