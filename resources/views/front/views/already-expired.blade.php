@@ -107,7 +107,7 @@
                         class="relative z-0 grid grid-cols-[70%_auto] justify-between rounded-xl border border-t-0 border-gray-400 bg-white p-4">
                         <div class="relative">
                             <p class="text-sm sm:text-base">Booking ID</p>
-                            <p class="">{{ $payment->uuid }}
+                            <p class="">{{ $payment->merchant_trx_id }}
                         </div>
                         <div class="">
                             <p class="text-sm sm:text-base">Jumlah tiket</p>

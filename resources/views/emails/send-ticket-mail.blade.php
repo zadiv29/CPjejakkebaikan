@@ -173,7 +173,7 @@
 
             <div class="detail-item">
                 <span>Booking ID:</span>
-                <p>{{ $payment->uuid }}</p>
+                <p>{{ $payment->merchant_trx_id }}</p>
             </div>
 
             <div class="detail-item">
