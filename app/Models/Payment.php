@@ -26,6 +26,10 @@ class Payment extends Model
     {
         return $this->hasMany(Volunteer::class, 'volunteer_payments_id');
     }
+    public function donaturs()
+    {
+        return $this->hasOne(Donatur::class, 'donation_payments_id');
+    }
 
     public function getRouteKeyName()
     {
