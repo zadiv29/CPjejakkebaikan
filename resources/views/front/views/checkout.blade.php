@@ -1,124 +1,169 @@
 @extends('front.layouts.app')
 @section('title', 'Pembayaran')
 @section('content')
-<body class="font-poppins text-[#292E4B] bg-[#F6F9FC]">
-    <section class="max-w-[640px] w-full min-h-screen mx-auto flex flex-col bg-[#FCF7F1] overflow-x-hidden">
-        <div class="header flex flex-col overflow-hidden h-[220px] relative">
-            <nav class="pt-5 px-3 flex justify-between items-center relative z-20">
-                <div class="flex items-center gap-[10px]">
-                    <a href="{{route('front.support', $fundraising->slug)}}" class="w-10 h-10 flex shrink-0">
-                        <img src="{{asset('assets/images/icons/back.svg')}}" alt="icon">
+
+    <body class="font-poppins bg-[#F6F9FC] text-[#292E4B]">
+        <section class="mx-auto flex min-h-screen w-full max-w-[640px] flex-col overflow-x-hidden bg-[#FCF7F1]">
+            <div class="header relative flex h-[220px] flex-col overflow-hidden">
+                <nav class="relative z-20 flex items-center justify-between px-3 pt-5">
+                    <div class="flex items-center gap-[10px]">
+                        <a href="{{ route('front.support', $fundraising->slug) }}" class="flex h-10 w-10 shrink-0">
+                            <img src="{{ asset('assets/images/icons/back.svg') }}" alt="icon">
+                        </a>
+                    </div>
+                    <div class="flex flex-col items-center text-center">
+                        <p class="text-sm font-semibold">#SendSupport</p>
+                    </div>
+                    <a href="" class="flex h-10 w-10 shrink-0">
+                        <img src="{{ asset('assets/images/icons/menu-dot.svg') }}" alt="icon">
                     </a>
-                </div>
-                <div class="flex flex-col items-center text-center">
-                    <p class="font-semibold text-sm">#SendSupport</p>
-                </div>
-                <a href="" class="w-10 h-10 flex shrink-0">
-                    <img src="{{asset('assets/images/icons/menu-dot.svg')}}" alt="icon">
-                </a>
-            </nav>
-            <div class="flex items-center px-4 my-auto gap-[14px]">
-                <div class="w-[90px] h-[100px] flex shrink-0 rounded-2xl overflow-hidden relative">
-                    <img src="{{Storage::url($fundraising->thumbnail)}}" class="w-full h-full object-cover" alt="thumbnail">
-                    <p class="w-[90px] h-[23px] bg-[#4541FF] text-center p-[4px_12px] absolute bottom-0 font-bold text-[10px] leading-[15px] text-white">VERIFIED</p>
-                </div>
-                <div class="flex flex-col gap-1">
-                    <p class="font-bold">{{$fundraising->name}}</p>
-                    <p class="text-xs leading-[18px]">Target <span class="font-bold text-[#FF7815]">Rp {{number_format($fundraising->target_amount, 0, ',', '.')}}</span></p>
+                </nav>
+                <div class="my-auto flex items-center gap-[14px] px-4">
+                    <div class="relative flex h-[100px] w-[90px] shrink-0 overflow-hidden rounded-2xl">
+                        <img src="{{ Storage::url($fundraising->thumbnail) }}" class="h-full w-full object-cover"
+                            alt="thumbnail">
+                        <p
+                            class="absolute bottom-0 h-[23px] w-[90px] bg-[#4541FF] p-[4px_12px] text-center text-[10px] font-bold leading-[15px] text-white">
+                            VERIFIED</p>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <p class="font-bold">{{ $fundraising->name }}</p>
+                        <p class="text-xs leading-[18px]">Target <span class="font-bold text-[#FF7815]">Rp
+                                {{ number_format($fundraising->target_amount, 0, ',', '.') }}</span></p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="flex flex-col z-30">
-            <div id="content" class="w-full min-h-[calc(100vh-220px)] h-full bg-white rounded-t-[40px] flex flex-col gap-5 p-[30px_24px_30px]">
-                <form method="POST" action="{{route('front.store', ['fundraising' => $fundraising->slug, 'totalAmountDonation'=>$totalAmountDonation])}}" class="flex flex-col gap-5" enctype="multipart/form-data">
-                    @csrf
-                    <div class="flex flex-col gap-[10px]">
-                        <p class="font-semibold text-sm">Your Donation</p>
-                        <div class="bg-[#E8E9EE] w-full flex items-center rounded-2xl p-[14px_16px] gap-[10px]">
-                            <div class="w-6 h-6 flex shrink-0">
-                                <img src="{{asset('assets/images/icons/dollar-circle.svg')}}" alt="icon">
-                            </div>
-                            <p class="font-semibold">Rp {{number_format($totalAmountDonation, 0, ',', '.')}}</p>
-                        </div>
-                        <input type="hidden" id="amount" name="amount" value="1000000">
-                    </div>
-                    <hr class="border-dashed">
-                    <div class="flex flex-col gap-[10px]">
-                        <p class="font-semibold text-sm">Send Payment to</p>
-                        <div class="w-full p-4 rounded-2xl border border-[#E8E9EE]">
-                            <button type="button" class="accordion-button flex w-full justify-between items-center" data-accordion="accordion-faq-1">
-                                <div class="flex shrink-0 h-6 overflow-hidden">
-                                    <img src="{{asset('assets/images/icons/Bank_Central_Asia.webp')}}" class="object-contain" alt="icon">
+            <div class="z-30 flex flex-col">
+                <div id="content"
+                    class="flex h-full min-h-[calc(100vh-220px)] w-full flex-col gap-5 rounded-t-[40px] bg-white p-[30px_24px_30px]">
+                    <form method="POST" action="{{ route('front.store', ['fundraising' => $fundraising->slug]) }}"
+                        class="flex flex-col gap-5" enctype="multipart/form-data">
+                        @csrf
+                        <div class="flex flex-col gap-[10px]">
+                            <p class="text-sm font-semibold">Your Donation</p>
+                            <div class="flex w-full items-center gap-[10px] rounded-2xl bg-[#E8E9EE] p-[14px_16px]">
+                                <div class="flex h-6 w-6 shrink-0">
+                                    <img src="{{ asset('assets/images/icons/dollar-circle.svg') }}" alt="icon">
                                 </div>
-                                <div class="arrow w-5 h-5 flex shrink-0 transition-all duration-300">
-                                    <img src="{{asset('assets/images/icons/arrow-down.svg')}}" class="" alt="icon">
+                                <input type="text" id="amount" name="amount"
+                                    class="w-full border-none bg-transparent focus:border-none focus:outline-none focus:ring-0"
+                                    :value="old('amount')" required autofocus autocomplete="amount">
+                            </div>
+                        </div>
+                        <hr class="border-dashed">
+                        <div class="flex flex-col gap-[10px]">
+                            <p class="text-sm font-semibold">Metode Pembayaran</p>
+                            <div x-data="{ open: false, selected: '', label: 'Pilih Bank' }" class="relative">
+                                <div
+                                    class="flex w-full items-center justify-between rounded border border-gray-300 bg-white px-4 py-2 text-left shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <h1>Virtual Account</h1>
+                                    <!-- Trigger Button -->
+                                    <button @click="open = !open" type="button"
+                                        class="flex items-center justify-between rounded border border-gray-300 bg-white px-4 py-1 text-left shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <span x-text="label"></span>
+                                        <svg class="ml-2 h-4 w-4 text-gray-500" fill="none" stroke="currentColor"
+                                            stroke-width="2" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </button>
                                 </div>
-                            </button>
-                            <div id="accordion-faq-1" class="accordion-content open">
-                                <div class="pt-3 flex flex-col gap-3">
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-sm text-[#66697A]">Bank Name</span>
-                                        <span class="font-semibold text-sm">Bank Central Asia</span>
-                                        <input type="hidden" id="bank" name="bank" value="BCA">
-                                    </div>
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-sm text-[#66697A]">Account Number</span>
-                                        <span class="font-semibold text-sm">893092093</span>
-                                        <input type="hidden" id="number" name="number" value="893092093">
-                                    </div>
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-sm text-[#66697A]">Account Name</span>
-                                        <span class="font-semibold text-sm">JejakKebaikan</span>
-                                        <input type="hidden" id="account" name="account" value="AnggaMustHelp">
-                                    </div>
+
+                                <!-- Dropdown Items -->
+                                <div x-show="open" x-transition:enter="transition ease-out duration-200"
+                                    x-transition:enter-start="opacity-0 translate-y-1"
+                                    x-transition:enter-end="opacity-100 translate-y-0"
+                                    x-transition:leave="transition ease-in duration-150"
+                                    x-transition:leave-start="opacity-100 translate-y-0"
+                                    x-transition:leave-end="opacity-0 translate-y-1" @click.away="open = false"
+                                    class="mt-1 w-full rounded border border-gray-300 bg-white shadow-lg">
+
+                                    <ul class="grid grid-cols-2 gap-2 p-4 text-sm text-gray-700">
+                                        <li @click="selected = 'BRI'; label = 'BRI'; open = false"
+                                            class="cursor-pointer rounded-md border px-4 py-2 hover:bg-gray-100">BRI</li>
+                                        <li @click="selected = 'BCA'; label = 'BCA'; open = false"
+                                            class="cursor-pointer rounded-md border px-4 py-2 hover:bg-gray-100">BCA</li>
+                                        <li @click="selected = 'Mandiri'; label = 'Mandiri'; open = false"
+                                            class="cursor-pointer rounded-md border px-4 py-2 hover:bg-gray-100">Mandiri
+                                        </li>
+                                        <li @click="selected = 'BNI'; label = 'BNI'; open = false"
+                                            class="cursor-pointer rounded-md border px-4 py-2 hover:bg-gray-100">BNI</li>
+                                    </ul>
                                 </div>
+
+                                <!-- Hidden input for form submission -->
+                                <input type="hidden" name="payment_channel" :value="selected">
                             </div>
                         </div>
-                    </div>
-                    <hr class="border-dashed">
-                    <div class="flex flex-col gap-[10px]">
-                        <p class="font-semibold text-sm">Masukkan Nama</p>
-                        <div class="flex items-center w-full p-[14px_16px] rounded-2xl border border-[#E8E9EE] focus-within:border-[#292E4B] transition-all duration-300">
-                            <div class="mr-[10px] w-6 h-6 flex items-center justify-center overflow-hidden">
-                                <img src="{{asset('assets/images/icons/user.svg')}}" class="h-full w-full object-contain" alt="icon">
-                            </div>
-                            <input type="text" class="font-semibold placeholder:text-[#292E4B] placeholder:font-normal w-full outline-none" placeholder="Siapa Namamu?" name="name">
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-[10px]">
-                        <p class="font-semibold text-sm">Nomor Telepon</p>
-                        <div class="flex items-center w-full p-[14px_16px] rounded-2xl border border-[#E8E9EE] focus-within:border-[#292E4B] transition-all duration-300">
-                            <div class="mr-[10px] w-6 h-6 flex items-center justify-center overflow-hidden">
-                                <img src="{{asset('assets/images/icons/call.svg')}}" class="h-full w-full object-contain" alt="icon">
-                            </div>
-                            <input type="number" class="font-semibold placeholder:text-[#292E4B] placeholder:font-normal w-full outline-none" placeholder="Tuliskan Nomor Telepon" name="phone_number">
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-[10px]">
-                        <p class="font-semibold text-sm">Bukti Transfer</p>
-                        <div class="relative">
-                            <button type="button" class="p-[14px_16px] rounded-2xl flex gap-[10px] w-full border border-[#E8E9EE] focus-within:border-[#292E4B] transition-all duration-300" onclick="document.getElementById('file').click()">
-                                <div class="w-6 h-6 flex shrink-0">
-                                    <img src="{{asset('assets/images/icons/receipt-text.svg')}}" alt="icon">
+                        <hr class="border-dashed">
+                        <div class="flex flex-col gap-[10px]">
+                            <p class="text-sm font-semibold">Masukkan Nama</p>
+                            <div
+                                class="flex w-full items-center rounded-2xl border border-[#E8E9EE] p-[14px_16px] transition-all duration-300 focus-within:border-[#292E4B]">
+                                <div class="mr-[10px] flex h-6 w-6 items-center justify-center overflow-hidden">
+                                    <img src="{{ asset('assets/images/icons/user.svg') }}"
+                                        class="h-full w-full object-contain" alt="icon">
                                 </div>
-                                <p id="fileLabel">Upload Bukti Transfer</p>
-                            </button>
-                            <input id="file" type="file" name="proof" class="hidden" onchange="updateFileName(this)">
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-[10px]">
-                        <p class="font-semibold text-sm">Pesan</p>
-                        <div class="flex w-full p-[14px_16px] rounded-2xl border border-[#E8E9EE] focus-within:border-[#292E4B] transition-all duration-300">
-                            <div class="mr-[10px] w-6 h-6 flex items-center justify-center overflow-hidden">
-                                <img src="{{asset('assets/images/icons/sms.svg')}}" class="h-full w-full object-contain" alt="icon">
+                                <input type="text"
+                                    class="w-full font-semibold outline-none placeholder:font-normal placeholder:text-[#292E4B]"
+                                    placeholder="Siapa Namamu?" name="name">
                             </div>
-                            <textarea name="notes" id="notes" class="font-semibold placeholder:text-[#292E4B] placeholder:font-normal w-full outline-none" cols="30" rows="4" placeholder="Berikan Pesan Untuk Mereka"></textarea>
                         </div>
-                    </div>
-                    <button type="submit" class="p-[14px_20px] bg-[#76AE43] rounded-full text-white w-full mx-auto font-semibold hover:shadow-[0_12px_20px_0_#76AE4380] transition-all duration-300 text-nowrap text-center">Confirm My Donation</button>
-                </form>
+                        <div class="flex flex-col gap-[10px]">
+                            <p class="text-sm font-semibold">Email</p>
+                            <div
+                                class="flex w-full items-center rounded-2xl border border-[#E8E9EE] p-[14px_16px] transition-all duration-300 focus-within:border-[#292E4B]">
+                                <div class="mr-[10px] flex h-6 w-6 items-center justify-center overflow-hidden">
+                                    <img src="{{ asset('assets/images/icons/sms.svg') }}"
+                                        class="h-full w-full object-contain" alt="icon">
+                                </div>
+                                <input type="text"
+                                    class="w-full font-semibold outline-none placeholder:font-normal placeholder:text-[#292E4B]"
+                                    placeholder="Masukan Email Anda" name="email" id="email">
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-[10px]">
+                            <p class="text-sm font-semibold">Nomor Telepon</p>
+                            <div
+                                class="flex w-full items-center rounded-2xl border border-[#E8E9EE] p-[14px_16px] transition-all duration-300 focus-within:border-[#292E4B]">
+                                <div class="mr-[10px] flex h-6 w-6 items-center justify-center overflow-hidden">
+                                    <img src="{{ asset('assets/images/icons/call.svg') }}"
+                                        class="h-full w-full object-contain" alt="icon">
+                                </div>
+                                <input type="number"
+                                    class="w-full font-semibold outline-none placeholder:font-normal placeholder:text-[#292E4B]"
+                                    placeholder="Tuliskan Nomor Telepon" name="phone_number">
+                            </div>
+                        </div>
+                        <div class="flex flex-col gap-[10px]">
+                            <p class="text-sm font-semibold">Pesan</p>
+                            <div
+                                class="flex w-full rounded-2xl border border-[#E8E9EE] p-[14px_16px] transition-all duration-300 focus-within:border-[#292E4B]">
+                                <div class="mr-[10px] flex h-6 w-6 items-center justify-center overflow-hidden">
+                                    <img src="{{ asset('assets/images/icons/sms.svg') }}"
+                                        class="h-full w-full object-contain" alt="icon">
+                                </div>
+                                <textarea name="notes" id="notes"
+                                    class="w-full font-semibold outline-none placeholder:font-normal placeholder:text-[#292E4B]" cols="30"
+                                    rows="4" placeholder="Berikan Pesan Untuk Mereka"></textarea>
+                            </div>
+                        </div>
+                        <button type="submit"
+                            class="mx-auto w-full text-nowrap rounded-full bg-[#76AE43] p-[14px_20px] text-center font-semibold text-white transition-all duration-300 hover:shadow-[0_12px_20px_0_#76AE4380]">Confirm
+                            My Donation</button>
+                    </form>
+                </div>
             </div>
-        </div>
-        
-    </section>
+
+        </section>
+    </body>
 @endsection
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const input = document.getElementById('amount');
+        input.addEventListener('input', function() {
+            let value = input.value.replace(/\D/g, '');
+            input.value = new Intl.NumberFormat('id-ID').format(value);
+        });
+    });
+</script>
