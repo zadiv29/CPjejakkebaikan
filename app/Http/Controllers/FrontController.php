@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreVoluntripRequest;
 use App\Mail\SendTicketMail;
 use App\Mail\VolunteerVerificationMail;
 use App\Models\Volunteer;
@@ -10,8 +9,6 @@ use App\Models\Payment;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Fundraising;
-use App\Http\Requests\StoreDonationRequest;
-use Illuminate\Support\Facades\DB;
 use App\Models\Donatur;
 use App\Models\Voluntrip;
 use Carbon\Carbon;
@@ -50,36 +47,16 @@ class FrontController extends Controller
         return view('front.views.details', compact('fundraising', 'goalReached'));
     }
 
-    public function support(Fundraising $fundraising)
+    public function support(Fundraising $fundraising) //NOTE - Can delete
     {
         return view('front.views.donation', compact('fundraising'));
     }
 
-    public function checkout(Fundraising $fundraising, $totalAmountDonation)
+    public function checkout(Fundraising $fundraising)
     {
-        return view('front.views.checkout', compact('fundraising', 'totalAmountDonation'));
+        return view('front.views.checkout', compact('fundraising'));
     }
 
-    public function store(StoreDonationRequest $request, Fundraising $fundraising, $totalAmountDonation)
-    {
-        DB::transaction(function () use ($request, $fundraising, $totalAmountDonation) {
-
-            $validated = $request->validated();
-
-            if ($request->hasFile('proof')) {
-                $proofPath = $request->file('proof')->store('proofs', 'public');
-                $validated['proof'] = $proofPath;
-            }
-
-            $validated['fundraising_id'] = $fundraising->id;
-            $validated['total_amount'] = $totalAmountDonation;
-            $validated['is_paid'] = false;
-
-            $donatur = Donatur::create($validated);
-        });
-
-        return redirect()->route('front.details', $fundraising->slug);
-    }
 
     //SECTION - Voluntrip Section
     // NOTE Chekout voluntrip
