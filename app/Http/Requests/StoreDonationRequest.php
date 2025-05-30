@@ -14,19 +14,33 @@ class StoreDonationRequest extends FormRequest
         return true;
     }
 
+
+    protected function prepareForValidation()
+    {
+        if ($this->has('amount')) {
+            $this->merge([
+                'amount' => (int) str_replace('.', '', $this->amount),
+            ]);
+        }
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
+
     public function rules(): array
     {
         return [
             //
             'name' => ['required', 'string', 'max:255'],
             'phone_number' => ['required', 'string'],
-            'proof' => ['required', 'image', 'mimes:png,jpg,jpeg'],
+            'payment_channel' => ['required', 'string'],
+            'email' => ['required', 'string'],
             'notes' => ['required', 'string', 'max:65535'],
+            'amount' => ['integer'],
+            'verify_token' => ['string']
         ];
     }
 }
