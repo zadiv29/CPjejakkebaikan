@@ -9,6 +9,7 @@ use App\Http\Controllers\FundraisingController;
 use App\Http\Controllers\FundraisingPhaseController;
 use App\Http\Controllers\FundraisingWithdrawalController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DonationController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\VoluntripController;
 
@@ -21,39 +22,60 @@ Route::get('/details/{fundraising:slug}', [FrontController::class, 'details'])
     ->name('front.details');
 
 Route::get('/support/{fundraising:slug}', [FrontController::class, 'support'])
-    ->name('front.support');
+    ->name('front.support'); //NOTE - Can delete
 
-Route::get('/checkout/{fundraising:slug}/{totalAmountDonation}', [FrontController::class, 'checkout'])
+Route::get('/checkout/{fundraising:slug}', [FrontController::class, 'checkout'])
     ->name('front.checkout');
 
-Route::post('/checkout/store/{fundraising:slug}/{totalAmountDonation}', [FrontController::class, 'store'])
+
+//ANCHOR - Create Checkout donation
+Route::post('/checkout/store/{fundraising:slug}', [DonationController::class, 'store'])
     ->name('front.store');
 
+Route::get('/donation/verify/{token}/{paymentChannel}/{amount}', [DonationController::class, 'verifyDonation'])
+    ->name('donation.verify');
+
+Route::get('/payment/donation/information/{payment}', [DonationController::class, 'information'])
+    ->name('payment.donation.information');
+
+Route::get('/payment/donation/already-verified/{payment}', [DonationController::class, 'alreadyPaid'])
+    ->name('payment.donation.already_verified');
+
+Route::get('/payment/donation/already-expired/{payment}', [DonationController::class, 'expiredPage'])
+    ->name('payment.donation.already_expired');
+
+//ANCHOR - Ticket
 Route::get('/details/voluntrip/{voluntrip:slug}', [FrontController::class, 'voluntripDetail'])
     ->name('front.voluntrip.details');
 
 Route::post('/buy/ticket/{voluntrips:slug}/{priceTicket}', [FrontController::class, 'buyTicket'])
     ->name('front.voluntrip.store');
 
-// ANCHOR Volunteer Create
+
 Route::get('/voluntrip/{voluntrip:slug}/volunteers/register', [FrontController::class, 'createVolunteer'])->name('volunteers.create');
 
-Route::post('/volunteers/store', [FrontController::class, 'volunteerStore'])->name('volunteers.store');
+Route::post('/volunteers/store', [FrontController::class, 'volunteerStore'])
+    ->name('volunteers.store');
 
 Route::get('/volunteer/notification', function () {
     return view('front.views.notification');
 })->name('volunteer.notification');
 
-Route::get('/volunteer/verify/{token}/{paymentChannel}', [FrontController::class, 'verifyVolunteer'])->name('volunteer.verify');
+Route::get('/volunteer/verify/{token}/{paymentChannel}', [FrontController::class, 'verifyVolunteer'])
+    ->name('volunteer.verify');
 
 Route::get('/payment/information/{payment}', [FrontController::class, 'information'])
     ->name('payment.information');
 
-Route::get('/payment/status/{payment}', [FrontController::class, 'getStatus'])->name('payment.status');
+Route::get('/payment/status/{payment}', [FrontController::class, 'getStatus'])
+    ->name('payment.status');
 
-Route::get('/payment/already-verified/{payment}', [FrontController::class, 'alreadyPaid'])->name('payment.already_verified');
+Route::get('/payment/already-verified/{payment}', [FrontController::class, 'alreadyPaid'])
+    ->name('payment.already_verified');
 
-Route::get('/payment/already-expired/{payment}', [FrontController::class, 'expiredPage'])->name('payment.already_expired');
+Route::get('/payment/already-expired/{payment}', [FrontController::class, 'expiredPage'])
+    ->name('payment.already_expired');
+
 
 
 
