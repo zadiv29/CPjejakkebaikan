@@ -112,7 +112,7 @@
                                 </div>
                                 <div class="flex w-full flex-col gap-[2px]">
                                     <div class="flex items-center justify-between">
-                                        <p class="font-bold">Rp {{ number_format($donatur->total_amount, 0, ',', '.') }}
+                                        <p class="font-bold">Rp {{ number_format($donatur->payment->amount, 0, ',', '.') }}
                                         </p>
                                         <p class="text-right text-[10px] font-semibold leading-[15px] text-[#66697A]">by
                                             {{ $donatur->name }}</p>
