@@ -59,6 +59,8 @@ class DonationController extends Controller
             ]);
         }
 
+        $fundraising = $donatur->fundraising;
+
         $response = Http::withToken(env('OMMOPAY_API_TOKEN'))
             ->post(
                 'https://api.ommopay.id/v1/virtual_account',
@@ -66,8 +68,8 @@ class DonationController extends Controller
                     'merchant_trx_id' => 'DN_' . time(),
                     'payment_channel' => $paymentChannel,
                     'amount' => $amount,
-                    'description' => `Pembayaran untuk program donasi`,
-                    'expired_time' => now()->addMinutes(value: 1)->toIso8601String(),
+                    'description' => "Pembayaran donasi untuk " . $fundraising->name,
+                    'expired_time' => now()->addMinutes(60)->toIso8601String(),
                     'callback_url' => route('payment.donation.callback'),
                 ]
             );
@@ -87,11 +89,9 @@ class DonationController extends Controller
                 'va_number' => $data['va_number'],
                 'expired_at' => $expiredAt,
                 'status' => 'pending',
-                'payment_type' => 'donasi'
+                'payment_type' => 'donasi',
+                'donatur_id' => $donatur->id
             ]);
-
-            $update = $donatur->update(['donation_payments_id' => $payment->id]);
-
             return redirect()->route('payment.donation.information', ['payment' => $data['uuid']]);
         }
 
@@ -139,12 +139,23 @@ class DonationController extends Controller
         $uuid = $request->input('uuid');
         $status = $request->input('status');
 
-        $payment = Payment::where('uuid', $uuid);
+        $payment = Payment::where('uuid', $uuid)->first();
 
         if ($payment) {
             $payment->update([
                 'status' => $status,
             ]);
+        }
+        if ($status === 'PAID') {
+            $donatur = $payment->donaturs;
+
+            if ($donatur) {
+                if (!$donatur->is_paid) {
+                    $donatur->update([
+                        'is_paid' => true
+                    ]);
+                }
+            }
         }
         return response()->json(['message' => 'Callback received']);
     }
