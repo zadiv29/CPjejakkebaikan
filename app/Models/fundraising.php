@@ -39,7 +39,6 @@ class Fundraising extends Model
         return $this->hasMany(Donatur::class)->where('is_paid', 1);
     }
 
-    // Ini adalah relasi kunci untuk perhitungan Anda
     public function confirmedPayments()
     {
         return $this->hasManyThrough(
