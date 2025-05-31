@@ -16,7 +16,13 @@ class Category extends Model
         'icon',
     ];
 
-    public function fundraisings(){
+    public function fundraisings()
+    {
         return $this->hasMany(Fundraising::class);
+    }
+
+    public function activeFundraisings() // <-- Nama relasi baru
+    {
+        return $this->hasMany(Fundraising::class)->where('is_active', true);
     }
 }
