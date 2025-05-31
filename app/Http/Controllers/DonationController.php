@@ -19,7 +19,11 @@ class DonationController extends Controller
 {
     public function store(StoreDonationRequest $request, Fundraising $fundraising)
     {
-        DB::transaction(function () use ($request, $fundraising) {
+
+        $donatur = null;
+        $fundraisingData = $fundraising;
+
+        DB::transaction(function () use ($request, $fundraising, &$donatur) {
 
             $validated = $request->validated();
 
@@ -34,8 +38,10 @@ class DonationController extends Controller
 
             Mail::to($mailDonatur)->send(new DonationVerificationMail($donatur, $paymentChannel, $fundraising, $amount));
         });
-
-        return redirect()->route('front.details', $fundraising->slug);
+        return view('front.views.donation.notification', [
+            'donatur' => $donatur,
+            'fundraising' => $fundraisingData
+        ]);
     }
 
     public function verifyDonation($token, $paymentChannel, $amount)
