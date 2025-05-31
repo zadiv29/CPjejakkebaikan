@@ -174,6 +174,7 @@ class FrontController extends Controller
                 'va_number' => $data['va_number'],
                 'expired_at' => $expiredAt,
                 'status' => 'pending',
+                'payment_type' => 'voluntrip',
             ]);
             foreach ($relatedVolunteers as $v) {
                 $v->update(['volunteer_payments_id' => $payment->id]);
