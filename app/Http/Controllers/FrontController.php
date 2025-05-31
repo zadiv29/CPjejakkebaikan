@@ -47,11 +47,6 @@ class FrontController extends Controller
         return view('front.views.details', compact('fundraising', 'goalReached'));
     }
 
-    public function support(Fundraising $fundraising) //NOTE - Can delete
-    {
-        return view('front.views.donation', compact('fundraising'));
-    }
-
     public function checkout(Fundraising $fundraising)
     {
         return view('front.views.checkout', compact('fundraising'));
