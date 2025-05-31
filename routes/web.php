@@ -21,9 +21,6 @@ Route::get('/category/{category}', [FrontController::class, 'category'])
 Route::get('/details/{fundraising:slug}', [FrontController::class, 'details'])
     ->name('front.details');
 
-Route::get('/support/{fundraising:slug}', [FrontController::class, 'support'])
-    ->name('front.support'); //NOTE - Can delete
-
 Route::get('/checkout/{fundraising:slug}', [FrontController::class, 'checkout'])
     ->name('front.checkout');
 
