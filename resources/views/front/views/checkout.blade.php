@@ -7,7 +7,7 @@
             <div class="header relative flex h-[220px] flex-col overflow-hidden">
                 <nav class="relative z-20 flex items-center justify-between px-3 pt-5">
                     <div class="flex items-center gap-[10px]">
-                        <a href="{{ route('front.support', $fundraising->slug) }}" class="flex h-10 w-10 shrink-0">
+                        <a href="{{ route('front.index') }}" class="flex h-10 w-10 shrink-0">
                             <img src="{{ asset('assets/images/icons/back.svg') }}" alt="icon">
                         </a>
                     </div>
