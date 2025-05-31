@@ -14,13 +14,19 @@ class Donatur extends Model
         'name',
         'notes',
         'fundraising_id',
-        'total_amount',
         'phone_number',
+        'email',
         'is_paid',
-        'proof',
+        'donation_payments_id',
+        'verify_token'
     ];
 
-    public function fundraising(){
+    public function fundraising()
+    {
         return $this->belongsTo(Fundraising::class);
+    }
+    public function payment()
+    {
+        return $this->hasOne(Payment::class);
     }
 }
