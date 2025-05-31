@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('phone_number');
+            $table->string('email');
             $table->foreignId('fundraising_id')->constrained()->onDelete('cascade');
-            $table->unsignedBigInteger('total_amount');
             $table->string('notes');
-            $table->string('proof');
             $table->boolean('is_paid');
+            $table->string('verify_token')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
