@@ -20,6 +20,7 @@ class Payment extends Model
         "status",
         "payment_type",
         "callback_payload",
+        'donatur_id'
     ];
 
     public function volunteers()
@@ -28,7 +29,7 @@ class Payment extends Model
     }
     public function donaturs()
     {
-        return $this->hasOne(Donatur::class, 'donation_payments_id');
+        return $this->belongsTo(Donatur::class, 'donatur_id');
     }
 
     public function getRouteKeyName()
