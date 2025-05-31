@@ -164,14 +164,13 @@ class DonationController extends Controller
                 $fundraising = $donatur->fundraising;
                 if ($fundraising) {
                     $currentReachedAmount = $fundraising->totalReachedAmount();
-                    Log::info("Fundraising '{$fundraising->name}' (ID: {$fundraising->id}) - Target: {$fundraising->target_amount}, Reached: {$currentReachedAmount}");
 
                     if ($currentReachedAmount >= $fundraising->target_amount && !$fundraising->has_finished) {
                         $fundraising->update([
                             'has_finished' => true
                         ]);
-                        Log::info("Fundraising '{$fundraising->name}' (ID: {$fundraising->id}) target reached. has_finished updated to true.");
                     }
+                }
             }
         }
         return response()->json(['message' => 'Callback received']);
