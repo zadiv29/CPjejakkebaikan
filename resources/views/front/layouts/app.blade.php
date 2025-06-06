@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="/build/assets/app-DbgIw2yi.css">
 
     <title>@yield('title')</title>
 </head>
@@ -30,6 +30,7 @@
     <script src="{{ asset('js/main.js') }}"></script>
     @stack('after-script')
 
+    <script src="/build/assets/app-HY-M8Fqn.js"></script>
 </body>
 
 </html>
