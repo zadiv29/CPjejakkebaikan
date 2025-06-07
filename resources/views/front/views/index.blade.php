@@ -4,11 +4,81 @@
     <section class="mx-auto flex min-h-screen w-full max-w-[640px] flex-col overflow-x-hidden bg-white pb-4">
 
         {{-- Header --}}
-        <div class="header flex flex-col overflow-hidden rounded-b-[50px] bg-gradient-to-b from-[#3CBBDB] to-[#2F5BE0FF]">
-            <div class="z-10 mt-[30px]">
-                <h1 class="text-center text-2xl font-extrabold leading-[36px] text-white">
-                    Selamat Datang Di Jejak Kebaikan<br>Sudah Berbuat Baik Hari ini?
-                </h1>
+        <div class="header flex flex-col overflow-hidden rounded-b-[50px] bg-gradient-to-b from-[#3CBBDB] to-[#2F5BE0FF] relative">
+            <div class="flex justify-between items-center p-4">
+                <div class="flex-grow text-center">
+                    <h1 class="text-2xl font-extrabold leading-[36px] text-white">
+                        Selamat Datang Di Jejak Kebaikan<br>Sudah Berbuat Baik Hari ini?
+                    </h1>
+                </div>
+                
+            {{-- Menu Hamburger --}}
+<div class="relative z-50">
+    <button id="hamburger" class="text-white focus:outline-none transition-transform duration-300 hover:scale-110">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+    </button>
+    <div id="menu" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl overflow-hidden transform transition-all duration-300 origin-top-right">
+        @auth
+        
+            {{-- User Profile --}}
+            <div class="px-4 py-3 border-b border-gray-100 bg-gray-50">
+                <div class="flex items-center gap-3">
+                    <img src="{{ Auth::user()->avatar ?? asset('assets/images/default-avatar.png') }}" 
+                         class="h-10 w-10 rounded-full object-cover border-2 border-blue-500" 
+                         alt="Profile">
+                    <div class="flex flex-col">
+                        <span class="text-xs text-gray-500">Hi,</span>
+                        <span class="text-sm font-semibold text-gray-800">{{ Auth::user()->name }}</span>
+                    </div>
+                </div>
+            </div>
+            
+            {{-- Menu Items --}}
+            <!-- <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 transition-colors duration-200">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+                <!-- <span>Profile</span>
+            </a>-->
+            
+            {{-- Buka Penggalangan --}}
+            <a href="https://adminjejakkebaikan.deuscode.co.id/" target="_blank" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 transition-colors duration-200 border-t border-gray-100">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                <span>Buka Penggalangan</span>
+            </a>
+            
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 text-left text-gray-700 hover:bg-blue-50 transition-colors duration-200 border-t border-gray-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    <span>Logout</span>
+                </button>
+            </form>
+        @else
+            {{-- Menu sebelum login --}}
+            <a href="{{ route('login') }}" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 transition-colors duration-200">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                </svg>
+                <span>Login</span>
+            </a>
+            <a href="{{ route('register') }}" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 transition-colors duration-200 border-t border-gray-100">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                </svg>
+                <span>Register</span>
+            </a>
+        @endauth
+    </div>
+</div>
+
+
             </div>
             <div class="-mt-[33px] h-fit w-full overflow-hidden">
                 <img src="{{ asset('assets/images/backgrounds/hero-background.png') }}" class="h-full w-full object-contain"
@@ -28,7 +98,6 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                     </svg>
                 </a>
-
             </div>
             <div class="main-carousel mt-[14px]">
                 @forelse ($categories as $category)
@@ -153,4 +222,12 @@
         @include('front.views.voluntrip')
 
     </section>
+
+    <script>
+        // JavaScript untuk toggle menu hamburger
+        document.getElementById('hamburger').addEventListener('click', function() {
+            const menu = document.getElementById('menu');
+            menu.classList.toggle('hidden');
+        });
+    </script>
 @endsection

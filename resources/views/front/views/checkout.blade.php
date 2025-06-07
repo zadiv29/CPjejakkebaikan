@@ -103,9 +103,11 @@
                                     <img src="{{ asset('assets/images/icons/user.svg') }}"
                                         class="h-full w-full object-contain" alt="icon">
                                 </div>
-                                <input type="text"
-                                    class="w-full font-semibold outline-none placeholder:font-normal placeholder:text-[#292E4B]"
-                                    placeholder="Siapa Namamu?" name="name">
+                               <input type="text"
+    class="w-full font-semibold outline-none placeholder:font-normal placeholder:text-[#292E4B]"
+    placeholder="Siapa Namamu?" name="name"
+    value="{{ auth()->check() ? auth()->user()->name : old('name') }}">
+
                             </div>
                         </div>
                         <div class="flex flex-col gap-[10px]">
@@ -116,9 +118,11 @@
                                     <img src="{{ asset('assets/images/icons/sms.svg') }}"
                                         class="h-full w-full object-contain" alt="icon">
                                 </div>
-                                <input type="text"
-                                    class="w-full font-semibold outline-none placeholder:font-normal placeholder:text-[#292E4B]"
-                                    placeholder="Masukan Email Anda" name="email" id="email">
+                               <input type="email"
+    class="w-full font-semibold outline-none placeholder:font-normal placeholder:text-[#292E4B]"
+    placeholder="Masukan Email Anda" name="email" id="email"
+    value="{{ auth()->check() ? auth()->user()->email : old('email') }}">
+
                             </div>
                         </div>
                         <div class="flex flex-col gap-[10px]">
