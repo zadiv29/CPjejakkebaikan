@@ -162,7 +162,7 @@
                         <div class="flex flex-row items-center gap-x-3">
                             <div class="flex flex-col">
                                 <h3 class="text-xl font-bold text-indigo-950">Rp
-                                    {{ number_format($donatur->total_amount, 0, ',', '.') }}</h3>
+                                    {{ number_format($donatur->payment->amount, 0, ',', '.') }}</h3>
                                 <p class="text-sm text-slate-500">{{ $donatur->name }}</p>
                             </div>
                         </div>
