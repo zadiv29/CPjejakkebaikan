@@ -25,8 +25,14 @@
                         </div>
                         <div class="hidden flex-col md:flex">
                             <p class="text-sm text-slate-500">Amount</p>
-                            <h3 class="text-xl font-bold text-indigo-950">Rp
-                                {{ number_format($donatur->total_amount, 0, ',', '.') }}</h3>
+                            @if ($donatur->payment)
+                                <h3 class="text-xl font-bold text-indigo-950">Rp
+                                    {{ number_format($donatur->payment->amount, 0, ',', '.') }}
+                                </h3>
+                            @else
+                                {{-- Tampilkan pesan atau nilai default jika payment null (misal untuk status PENDING) --}}
+                                -
+                            @endif
                         </div>
                         @if ($donatur->is_paid)
                             <span class="w-fit rounded-full bg-green-500 px-3 py-2 text-sm font-bold text-white">
