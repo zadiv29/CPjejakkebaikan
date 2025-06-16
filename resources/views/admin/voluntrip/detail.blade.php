@@ -209,7 +209,7 @@
             <!-- Tentang Event -->
             <div class="break-words border-t pt-4">
                 <h2 class="mb-2 text-lg font-semibold text-gray-800">Tentang Event</h2>
-                <p class="text-justify leading-relaxed text-gray-600">{{ $voluntrip->about }}</p>
+                <p class="text-justify leading-relaxed text-[#979797]">{{ $voluntrip->about }}</p>
             </div>
         </div>
     </div>
