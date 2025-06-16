@@ -36,9 +36,51 @@
 
                     <div class="mt-4">
                         <x-input-label for="start_date" :value="__('Start Date')" />
-                        <x-text-input id="start_date" class="mt-1 block w-full" type="date" name="start_date"
+                        {{-- <x-text-input id="start_date" class="mt-1 block w-full" type="date" name="start_date"
                             required autofocus autocomplete="start_date" :value="old('start_date')" />
-                        <x-input-error :messages="$errors->get('start_date')" class="mt-2" />
+                        <x-input-error :messages="$errors->get('start_date')" class="mt-2" /> --}}
+                        <div class="grid grid-cols-3 gap-4">
+                            {{-- Dropdown untuk Tanggal (Hari) --}}
+                            <select id="start_date_day" name="start_date_day"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                <option value="">DD</option>
+                                @for ($i = 1; $i <= 31; $i++)
+                                    <option value="{{ $i }}"
+                                        {{ old('start_date_day') == $i ? 'selected' : '' }}>
+                                        {{ str_pad($i, 2, '0', STR_PAD_LEFT) }}
+                                    </option>
+                                @endfor
+                            </select>
+                            <x-input-error :messages="$errors->get('start_date_day')" class="mt-2" />
+
+                            {{-- Dropdown untuk Bulan --}}
+                            <select id="start_date_month" name="start_date_month"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                <option value="">MM</option>
+                                @foreach (range(1, 12) as $month)
+                                    <option value="{{ $month }}"
+                                        {{ old('start_date_month') == $month ? 'selected' : '' }}>
+                                        {{ DateTime::createFromFormat('!m', $month)->format('F') }}
+                                        {{-- Menampilkan nama bulan --}}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <x-input-error :messages="$errors->get('start_date_month')" class="mt-2" />
+
+                            {{-- Dropdown untuk Tahun --}}
+                            <select id="start_date_year" name="start_date_year"
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                <option value="">YYYY</option>
+                                {{-- Ubah start loop menjadi tahun yang lebih lampau, contohnya 1950 --}}
+                                @for ($i = 1950; $i <= date('Y') + 10; $i++)
+                                    <option value="{{ $i }}"
+                                        {{ old('start_date_year') == $i ? 'selected' : '' }}>
+                                        {{ $i }}
+                                    </option>
+                                @endfor
+                            </select>
+                            <x-input-error :messages="$errors->get('start_date_year')" class="mt-2" />
+                        </div>
                     </div>
 
                     <div class="mt-4">
@@ -93,5 +135,80 @@
             let value = input.value.replace(/\D/g, '');
             input.value = new Intl.NumberFormat('id-ID').format(value);
         });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const today = new Date();
+        const currentDay = today.getDate();
+        const currentMonth = today.getMonth() + 1; // getMonth() returns 0-11
+        const currentYear = today.getFullYear();
+
+        // Fungsi untuk mengatur nilai dropdown
+        function setDropdownValue(id, value) {
+            const dropdown = document.getElementById(id);
+            if (dropdown) {
+                // Hanya set jika old() tidak ada (form baru, bukan setelah validasi error)
+                if (!dropdown.value) {
+                    dropdown.value = value;
+                }
+            }
+        }
+
+        // Set nilai dropdown ke tanggal sekarang
+        setDropdownValue('start_date_day', currentDay);
+        setDropdownValue('start_date_month', currentMonth);
+        setDropdownValue('start_date_year', currentYear);
+
+        // --- Opsional: Logika untuk menyesuaikan jumlah hari berdasarkan bulan dan tahun ---
+        const dayDropdown = document.getElementById('start_date_day');
+        const monthDropdown = document.getElementById('start_date_month');
+        const yearDropdown = document.getElementById('start_date_year');
+
+        function updateDaysInMonth() {
+            const selectedYear = parseInt(yearDropdown.value);
+            const selectedMonth = parseInt(monthDropdown.value);
+
+            if (selectedYear && selectedMonth) {
+                // Dapatkan jumlah hari di bulan yang dipilih
+                const daysInMonth = new Date(selectedYear, selectedMonth, 0)
+                    .getDate(); // Hari ke-0 dari bulan berikutnya
+
+                const currentSelectedDay = parseInt(dayDropdown.value);
+
+                // Bersihkan opsi hari yang ada
+                dayDropdown.innerHTML = '<option value="">DD</option>';
+
+                // Tambahkan opsi hari baru
+                for (let i = 1; i <= daysInMonth; i++) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = String(i).padStart(2, '0');
+                    dayDropdown.appendChild(option);
+                }
+
+                // Pilih hari yang sebelumnya dipilih jika masih valid, atau set ke hari terakhir jika melebihi
+                if (currentSelectedDay && currentSelectedDay <= daysInMonth) {
+                    dayDropdown.value = currentSelectedDay;
+                } else if (currentSelectedDay && currentSelectedDay > daysInMonth) {
+                    dayDropdown.value = daysInMonth; // Set ke hari terakhir bulan
+                }
+            } else {
+                // Jika tahun atau bulan belum dipilih, reset hari ke default
+                dayDropdown.innerHTML = '<option value="">DD</option>';
+                for (let i = 1; i <= 31; i++) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = String(i).padStart(2, '0');
+                    dayDropdown.appendChild(option);
+                }
+            }
+        }
+
+        // Jalankan saat halaman dimuat (untuk memastikan hari yang benar untuk default tanggal sekarang)
+        updateDaysInMonth();
+
+        // Tambahkan event listener saat bulan atau tahun berubah
+        monthDropdown.addEventListener('change', updateDaysInMonth);
+        yearDropdown.addEventListener('change', updateDaysInMonth);
     });
 </script>
