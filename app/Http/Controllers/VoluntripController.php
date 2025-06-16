@@ -59,6 +59,28 @@ class VoluntripController extends Controller
 
             $validated = $request->validated();
 
+            try {
+                // Menggabungkan hari, bulan, dan tahun menjadi objek Carbon
+                $startDate = Carbon::create(
+                    $validated['start_date_year'],
+                    $validated['start_date_month'],
+                    $validated['start_date_day']
+                )->startOfDay(); // Menetapkan waktu ke 00:00:00 untuk konsistensi
+
+                // Menambahkan tanggal yang sudah digabung ke array validated
+                $validated['start_date'] = $startDate;
+
+                // Opsional: Hapus input terpisah dari $validated jika tidak diperlukan lagi
+                unset($validated['start_date_day']);
+                unset($validated['start_date_month']);
+                unset($validated['start_date_year']);
+            } catch (\Exception $e) {
+                // Menangani error jika tanggal yang digabungkan tidak valid (misal: 31 Februari)
+                return redirect()->back()->withErrors([
+                    'start_date' => 'Tanggal mulai yang dimasukkan tidak valid.'
+                ])->withInput();
+            }
+
             if ($request->hasFile('thumbnail')) {
                 $thumbnailPath = $request->file('thumbnail')->store('thumbnails', 'public');
                 $validated['thumbnail'] = $thumbnailPath;
