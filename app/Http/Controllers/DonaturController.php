@@ -14,7 +14,7 @@ class DonaturController extends Controller
     public function index()
     {
         //
-        $donaturs = Donatur::with(['fundraising'])->orderByDesc('id')->paginate(5);
+        $donaturs = Donatur::with(['fundraising', 'payment'])->where('is_paid', 1)->orderByDesc('id')->paginate(5);
 
         return view('admin.donaturs.index', compact('donaturs'));
     }
