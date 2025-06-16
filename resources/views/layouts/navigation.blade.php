@@ -37,7 +37,7 @@
                         </x-nav-link>
                     @endrole
 
-                    <x-nav-link :href="route('admin.fundraisers.index')" :active="request()->routeIs('admin.fundraiser.index')">
+                    <x-nav-link :href="route('admin.fundraisers.index')" :active="request()->routeIs('admin.fundraisers.index')">
                         {{ __('Fundraiser') }}
                     </x-nav-link>
 
