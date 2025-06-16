@@ -17,7 +17,7 @@
 
                 @forelse($categories as $category)
                     <div class="item-card grid grid-cols-[40%_30%_auto] items-center justify-between">
-                        <div class="flex flex-row gap-x-3">
+                        <div class="flex flex-row items-center gap-x-3">
                             <img src="{{ Storage::url($category->icon) }}" alt=""
                                 class="h-[90px] w-[120px] rounded-2xl object-cover">
                             <div class="flex flex-col">
