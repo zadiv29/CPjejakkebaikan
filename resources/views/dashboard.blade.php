@@ -11,7 +11,7 @@
         <div class="mx-auto max-w-5xl sm:px-6 lg:px-8">
             <div class="flex flex-col gap-y-5 overflow-hidden bg-white p-10 shadow-sm sm:rounded-lg">
 
-                <div class="item-card flex flex-col items-center justify-start gap-x-10 gap-y-10 md:flex-row">
+                <div class="item-card flex flex-col items-center justify-center gap-x-10 gap-y-10 md:flex-row">
 
                     @role('owner|fundraiser')
                         <div class="flex flex-col items-center gap-y-3 text-center">
