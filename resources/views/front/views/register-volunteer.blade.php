@@ -81,14 +81,6 @@
                                     @mouseleave="show = false" @click="show = !show"
                                     class="relative inline-block cursor-pointer rounded-full bg-green-500 px-2 pb-[2px] text-sm text-white">
                                     Penanggung Jawab
-
-                                    <!-- Tooltip -->
-                                    <span x-show="show" x-transition
-                                        class="absolute left-1/2 top-full z-10 mt-2 w-[200px] -translate-x-1/2 rounded-md bg-black px-3 py-2 text-xs text-white shadow-lg"
-                                        @click.outside="show = false">
-                                        Penanggung jawab akan menerima email verifikasi dan bertanggung jawab atas proses
-                                        pembayaran.
-                                    </span>
                                 </p>
                             </div>
 
@@ -117,7 +109,10 @@
                         <label class="mb-1 block font-medium">Metode Pembayaran</label>
                         <div
                             class="flex w-full items-center justify-between rounded border border-gray-300 bg-white px-4 py-2 text-left shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <h1>Virtual Account</h1>
+                            <div class="flex items-center space-x-3">
+                                <x-fontisto-wallet class="w-4 text-blue-400" />
+                                <h1>Virtual Account</h1>
+                            </div>
                             <!-- Trigger Button -->
                             <button @click="open = !open" type="button"
                                 class="flex items-center justify-between rounded border border-gray-300 bg-white px-4 py-1 text-left shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -139,14 +134,18 @@
                             class="mt-1 w-full rounded border border-gray-300 bg-white shadow-lg">
 
                             <ul class="grid grid-cols-2 gap-2 p-4 text-sm text-gray-700">
-                                <li @click="selected = 'BRI'; label = 'BRI'; open = false"
-                                    class="cursor-pointer rounded-md border px-4 py-2 hover:bg-gray-100">BRI</li>
-                                <li @click="selected = 'BCA'; label = 'BCA'; open = false"
-                                    class="cursor-pointer rounded-md border px-4 py-2 hover:bg-gray-100">BCA</li>
-                                <li @click="selected = 'Mandiri'; label = 'Mandiri'; open = false"
-                                    class="cursor-pointer rounded-md border px-4 py-2 hover:bg-gray-100">Mandiri</li>
-                                <li @click="selected = 'BNI'; label = 'BNI'; open = false"
-                                    class="cursor-pointer rounded-md border px-4 py-2 hover:bg-gray-100">BNI</li>
+                                <li @click="selected = 'BRI'; label = 'BRI';"
+                                    :class="{ 'bg-blue-50 border-blue-500': selected === 'BRI' }"
+                                    class="flex cursor-pointer items-center space-x-2 rounded-md border px-4 py-2 hover:bg-gray-100">
+                                    <img src="{{ asset('assets/images/icons/briva.svg') }}" alt="briva"
+                                        class="w-13" />
+                                </li>
+                                <li @click="selected = 'BNI'; label = 'BNI';"
+                                    :class="{ 'bg-blue-50 border-blue-500': selected === 'BNI' }"
+                                    class="cursor-pointer rounded-md border px-4 py-2 hover:bg-gray-100">
+                                    <img src="{{ asset('assets/images/icons/bniva.svg') }}" alt="bniva"
+                                        class="w-13" />
+                                </li>
                             </ul>
                         </div>
 
