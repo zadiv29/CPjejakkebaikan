@@ -40,8 +40,9 @@
                         class="flex flex-col gap-5" enctype="multipart/form-data">
                         @csrf
                         <div class="flex flex-col gap-[10px]">
-                            <p class="text-sm font-semibold">Your Donation</p>
-                            <div class="flex w-full items-center gap-[10px] rounded-2xl bg-[#E8E9EE] p-[14px_16px]">
+                            <p class="text-sm font-semibold">Donasi Anda</p>
+                            <div
+                                class="flex w-full items-center gap-[10px] rounded border border-gray-300 px-4 py-2 transition-all duration-300 focus-within:border-[#292E4B]">
                                 <div class="flex h-6 w-6 shrink-0">
                                     <img src="{{ asset('assets/images/icons/dollar-circle.svg') }}" alt="icon">
                                 </div>
@@ -56,7 +57,10 @@
                             <div x-data="{ open: false, selected: '', label: 'Pilih Bank' }" class="relative">
                                 <div
                                     class="flex w-full items-center justify-between rounded border border-gray-300 bg-white px-4 py-2 text-left shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                    <h1>Virtual Account</h1>
+                                    <div class="flex items-center space-x-3">
+                                        <x-fontisto-wallet class="w-4 text-blue-400" />
+                                        <h1>Virtual Account</h1>
+                                    </div>
                                     <!-- Trigger Button -->
                                     <button @click="open = !open" type="button"
                                         class="flex items-center justify-between rounded border border-gray-300 bg-white px-4 py-1 text-left shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -78,15 +82,18 @@
                                     class="mt-1 w-full rounded border border-gray-300 bg-white shadow-lg">
 
                                     <ul class="grid grid-cols-2 gap-2 p-4 text-sm text-gray-700">
-                                        <li @click="selected = 'BRI'; label = 'BRI'; open = false"
-                                            class="cursor-pointer rounded-md border px-4 py-2 hover:bg-gray-100">BRI</li>
-                                        <li @click="selected = 'BCA'; label = 'BCA'; open = false"
-                                            class="cursor-pointer rounded-md border px-4 py-2 hover:bg-gray-100">BCA</li>
-                                        <li @click="selected = 'Mandiri'; label = 'Mandiri'; open = false"
-                                            class="cursor-pointer rounded-md border px-4 py-2 hover:bg-gray-100">Mandiri
+                                        <li @click="selected = 'BRI'; label = 'BRI';"
+                                            :class="{ 'bg-blue-50 border-blue-500': selected === 'BRI' }"
+                                            class="flex cursor-pointer items-center space-x-2 rounded-md border px-4 py-2 hover:bg-gray-100">
+                                            <img src="{{ asset('assets/images/icons/briva.svg') }}" alt="briva"
+                                                class="w-12" />
                                         </li>
-                                        <li @click="selected = 'BNI'; label = 'BNI'; open = false"
-                                            class="cursor-pointer rounded-md border px-4 py-2 hover:bg-gray-100">BNI</li>
+                                        <li @click="selected = 'BNI'; label = 'BNI';"
+                                            :class="{ 'bg-blue-50 border-blue-500': selected === 'BNI' }"
+                                            class="cursor-pointer rounded-md border px-4 py-2 hover:bg-gray-100">
+                                            <img src="{{ asset('assets/images/icons/bniva.svg') }}" alt="bniva"
+                                                class="w-12" />
+                                        </li>
                                     </ul>
                                 </div>
 
@@ -98,53 +105,53 @@
                         <div class="flex flex-col gap-[10px]">
                             <p class="text-sm font-semibold">Masukkan Nama</p>
                             <div
-                                class="flex w-full items-center rounded-2xl border border-[#E8E9EE] p-[14px_16px] transition-all duration-300 focus-within:border-[#292E4B]">
+                                class="flex w-full items-center rounded border border-gray-300 px-4 py-2 transition-all duration-300 focus-within:border-[#292E4B]">
                                 <div class="mr-[10px] flex h-6 w-6 items-center justify-center overflow-hidden">
                                     <img src="{{ asset('assets/images/icons/user.svg') }}"
                                         class="h-full w-full object-contain" alt="icon">
                                 </div>
                                 <input type="text"
-                                    class="w-full font-semibold outline-none placeholder:font-normal placeholder:text-[#292E4B]"
+                                    class="w-full border-none font-semibold placeholder:font-normal placeholder:text-[#292E4B] focus:border-none focus:outline-none focus:ring-0"
                                     placeholder="Siapa Namamu?" name="name">
                             </div>
                         </div>
                         <div class="flex flex-col gap-[10px]">
                             <p class="text-sm font-semibold">Email</p>
                             <div
-                                class="flex w-full items-center rounded-2xl border border-[#E8E9EE] p-[14px_16px] transition-all duration-300 focus-within:border-[#292E4B]">
+                                class="flex w-full items-center rounded border border-gray-300 px-4 py-2 transition-all duration-300 focus-within:border-[#292E4B]">
                                 <div class="mr-[10px] flex h-6 w-6 items-center justify-center overflow-hidden">
                                     <img src="{{ asset('assets/images/icons/sms.svg') }}"
                                         class="h-full w-full object-contain" alt="icon">
                                 </div>
                                 <input type="text"
-                                    class="w-full font-semibold outline-none placeholder:font-normal placeholder:text-[#292E4B]"
+                                    class="w-full border-none font-semibold outline-none placeholder:font-normal placeholder:text-[#292E4B] focus:border-none focus:outline-none focus:ring-0"
                                     placeholder="Masukan Email Anda" name="email" id="email">
                             </div>
                         </div>
                         <div class="flex flex-col gap-[10px]">
                             <p class="text-sm font-semibold">Nomor Telepon</p>
                             <div
-                                class="flex w-full items-center rounded-2xl border border-[#E8E9EE] p-[14px_16px] transition-all duration-300 focus-within:border-[#292E4B]">
+                                class="flex w-full items-center rounded border border-gray-300 px-4 py-2 transition-all duration-300 focus-within:border-[#292E4B]">
                                 <div class="mr-[10px] flex h-6 w-6 items-center justify-center overflow-hidden">
                                     <img src="{{ asset('assets/images/icons/call.svg') }}"
                                         class="h-full w-full object-contain" alt="icon">
                                 </div>
                                 <input type="number"
-                                    class="w-full font-semibold outline-none placeholder:font-normal placeholder:text-[#292E4B]"
+                                    class="w-full border-none font-semibold outline-none placeholder:font-normal placeholder:text-[#292E4B] focus:border-none focus:outline-none focus:ring-0"
                                     placeholder="Tuliskan Nomor Telepon" name="phone_number">
                             </div>
                         </div>
                         <div class="flex flex-col gap-[10px]">
                             <p class="text-sm font-semibold">Pesan</p>
                             <div
-                                class="flex w-full rounded-2xl border border-[#E8E9EE] p-[14px_16px] transition-all duration-300 focus-within:border-[#292E4B]">
-                                <div class="mr-[10px] flex h-6 w-6 items-center justify-center overflow-hidden">
+                                class="flex w-full rounded border border-gray-300 px-4 py-2 transition-all duration-300 focus-within:border-[#292E4B]">
+                                <div class="mr-[10px] mt-2 flex h-6 w-6 items-center justify-center overflow-hidden">
                                     <img src="{{ asset('assets/images/icons/sms.svg') }}"
                                         class="h-full w-full object-contain" alt="icon">
                                 </div>
                                 <textarea name="notes" id="notes"
-                                    class="w-full font-semibold outline-none placeholder:font-normal placeholder:text-[#292E4B]" cols="30"
-                                    rows="4" placeholder="Berikan Pesan Untuk Mereka"></textarea>
+                                    class="w-full border-none font-semibold outline-none placeholder:font-normal placeholder:text-[#292E4B] focus:border-none focus:outline-none focus:ring-0"
+                                    cols="30" rows="4" placeholder="Berikan Pesan Untuk Mereka"></textarea>
                             </div>
                         </div>
                         <button type="submit"
