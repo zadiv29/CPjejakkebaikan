@@ -1,10 +1,10 @@
 @extends('front.layouts.app')
 @section('title', 'Dashboard')
 @section('content')
-    <section class="mx-auto flex min-h-screen w-full max-w-[640px] flex-col overflow-x-hidden bg-white pb-4">
+    <section class="mx-auto flex min-h-screen w-full max-w-[640px] flex-col overflow-x-hidden bg-white">
 
         {{-- Header --}}
-        <div class="header flex flex-col overflow-hidden rounded-b-[50px] bg-gradient-to-b from-[#3CBBDB] to-[#2F5BE0FF]">
+        <div class="header flex flex-col overflow-hidden rounded-b-[50px] bg-gradient-to-b from-[#8BCAFF] to-[#FFFFFF]">
             <div class="z-10 mt-[30px]">
                 <h1 class="text-center text-2xl font-extrabold leading-[36px] text-white">
                     Selamat Datang Di Jejak Kebaikan<br>Sudah Berbuat Baik Hari ini?
@@ -34,9 +34,11 @@
                 @forelse ($categories as $category)
                     <div class="px-2 first-of-type:pl-4 last-of-type:pr-4">
                         <a href="{{ route('front.category', $category) }}"
-                            class="fundrising-card flex min-h-[160px] w-[135px] flex-col items-center gap-3 rounded-[30px] border border-[#E8E9EE] bg-white p-5 shadow-sm transition hover:shadow-md">
-                            <div class="flex h-[60px] w-[60px] shrink-0 overflow-hidden">
-                                <img src="{{ Storage::url($category->icon) }}" alt="icon" class="object-contain">
+                            class="fundrising-card flex flex-col items-center gap-2">
+                            <div
+                                class="flex h-fit w-[60px] shrink-0 flex-col items-center overflow-hidden rounded-2xl border border-[#E8E9EE] bg-white p-3 shadow-sm transition hover:shadow-md">
+                                <img src="{{ Storage::url($category->icon) }}" alt="icon"
+                                    class="h-[35px] object-contain">
                             </div>
                             <span
                                 class="my-auto line-clamp-2 text-center text-sm font-semibold">{{ $category->name }}</span>
@@ -71,23 +73,31 @@
                 @forelse($fundraisings as $fundraising)
                     <div class="mb-6 px-2 first-of-type:pl-4 last-of-type:pr-4">
                         <div
-                            class="flex w-[208px] flex-col gap-[14px] rounded-2xl border border-[#E8E9EE] bg-white p-[14px] shadow-sm transition hover:shadow-md">
+                            class="flex w-[208px] flex-col rounded-2xl border border-[#E8E9EE] bg-white shadow-sm transition hover:shadow-md">
                             <a href="{{ route('front.details', $fundraising) }}">
                                 <div class="flex h-[120px] w-full shrink-0 overflow-hidden rounded-2xl">
                                     <img src="{{ Storage::url($fundraising->thumbnail) }}"
                                         class="h-full w-full object-cover" alt="thumbnail">
                                 </div>
                             </a>
-                            <div class="flex flex-col gap-[6px]">
-                                <a href="{{ route('front.details', $fundraising) }}"
-                                    class="line-clamp-2 font-bold hover:line-clamp-none">
-                                    {{ $fundraising->name }}
-                                </a>
-                                <p class="text-xs leading-[18px]">Target <span class="font-bold text-[#FF7815]">Rp
-                                        {{ number_format($fundraising->target_amount, 0, ',', '.') }}</span></p>
+                            <div class="p-2">
+                                <div class="flex flex-col gap-[6px]">
+                                    <a href="{{ route('front.details', $fundraising) }}"
+                                        class="line-clamp-2 font-bold hover:line-clamp-none">
+                                        {{ $fundraising->name }}
+                                    </a>
+                                </div>
+                                <div class="mt-2 flex items-center gap-1">
+                                    <p class="text-sm">{{ $fundraising->fundraiser->user->name }}</p>
+                                    <div class="flex shrink-0">
+                                        <img src="{{ asset('assets/images/icons/tick-circle.svg') }}" alt="icon">
+                                    </div>
+                                </div>
+                                <div class="relative mt-2 h-[8px] w-full overflow-hidden rounded-full bg-gray-200">
+                                    <div class="h-full rounded-full bg-[#90CFF1] transition-all duration-300 ease-in-out"
+                                        style="width: {{ $fundraising->getPercentageAttribute() }}%;"></div>
+                                </div>
                             </div>
-                            <progress value="{{ $fundraising->getPercentageAttribute() }}" max="100"
-                                class="h-[6px] w-full overflow-hidden rounded-full"></progress>
                         </div>
                     </div>
                 @empty
@@ -151,6 +161,7 @@
 
         {{-- //ANCHOR Voluntrip --}}
         @include('front.views.voluntrip')
+        @include('front.views.footer')
 
     </section>
 @endsection
