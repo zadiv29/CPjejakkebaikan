@@ -75,8 +75,10 @@
                         <p class="text-[20px] font-bold leading-[30px] text-[#76AE43]">Rp
                             {{ number_format($fundraising->target_amount, 0, ',', '.') }}</p>
                     </div>
-                    <progress id="fund" value="{{ $fundraising->getPercentageAttribute() }}" max="100"
-                        class="h-[6px] w-full overflow-hidden rounded-full"></progress>
+                    <div class="relative mt-2 h-[8px] w-full overflow-hidden rounded-full bg-gray-200">
+                        <div class="h-full rounded-full bg-[#90CFF1] transition-all duration-300 ease-in-out"
+                            style="width: {{ $fundraising->getPercentageAttribute() }}%;"></div>
+                    </div>
                 </div>
 
                 @forelse($fundraising->fundraising_phases as $phase)
