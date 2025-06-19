@@ -111,6 +111,7 @@
                             <h3 class="text-xl font-bold text-indigo-950">Buat Jejak Kebaikan</h3>
                             <p class="text-base text-slate-500">Jadilah bagian dari kami untuk membantu <br>mereka yang
                                 membutuhkan bantuan kita</p>
+                            <p class="text-base text-slate-500">Klik tombol dibawah untuk mengaktifkan akun</p>
                         </div>
 
                         @if ($fundraiserStatus == 'Pending')
